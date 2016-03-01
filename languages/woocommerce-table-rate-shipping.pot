@@ -1,0 +1,677 @@
+# Copyright (C) 2015 WooCommerce Table Rate Shipping
+# This file is distributed under the same license as the WooCommerce Table Rate Shipping package.
+msgid ""
+msgstr ""
+"Project-Id-Version: WooCommerce Table Rate Shipping 2.8.0\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/woocommerce-table-rate-"
+"shipping\n"
+"POT-Creation-Date: 2015-01-29 16:45:21+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2015-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: admin/table-rate-rows.php:19
+msgid "Shipping Class"
+msgstr ""
+
+#: admin/table-rate-rows.php:19
+msgid "Shipping class this rate applies to."
+msgstr ""
+
+#: admin/table-rate-rows.php:20
+msgid "Condition"
+msgstr ""
+
+#: admin/table-rate-rows.php:20
+msgid "Condition vs. destination"
+msgstr ""
+
+#: admin/table-rate-rows.php:21
+msgid "Min&ndash;Max"
+msgstr ""
+
+#: admin/table-rate-rows.php:21
+msgid "Bottom and top range for the selected condition. "
+msgstr ""
+
+#: admin/table-rate-rows.php:22
+msgid "Break"
+msgstr ""
+
+#: admin/table-rate-rows.php:22
+msgid ""
+"Break at this point. For per-order rates, no rates other than this will be "
+"offered. For calculated rates, this will stop any further rates being "
+"matched."
+msgstr ""
+
+#: admin/table-rate-rows.php:23
+msgid "Abort"
+msgstr ""
+
+#: admin/table-rate-rows.php:23
+msgid ""
+"Enable this option to disable all rates/this shipping method if this row "
+"matches any item/line/class being quoted."
+msgstr ""
+
+#: admin/table-rate-rows.php:24
+msgid "Row cost"
+msgstr ""
+
+#: admin/table-rate-rows.php:24
+msgid "Cost for shipping the order, excluding tax."
+msgstr ""
+
+#: admin/table-rate-rows.php:25
+msgid "Item cost"
+msgstr ""
+
+#: admin/table-rate-rows.php:25
+msgid "Cost per item, excluding tax."
+msgstr ""
+
+#: admin/table-rate-rows.php:26
+msgid "cost"
+msgstr ""
+
+#: admin/table-rate-rows.php:26
+msgid "Cost per weight unit, excluding tax."
+msgstr ""
+
+#: admin/table-rate-rows.php:27
+msgid "% cost"
+msgstr ""
+
+#: admin/table-rate-rows.php:27
+msgid "Percentage of total to charge."
+msgstr ""
+
+#: admin/table-rate-rows.php:28
+msgid "Label"
+msgstr ""
+
+#: admin/table-rate-rows.php:28
+msgid "Label for the shipping method which the user will be presented. "
+msgstr ""
+
+#: admin/table-rate-rows.php:33
+msgid "+ Add Shipping Rate"
+msgstr ""
+
+#: admin/table-rate-rows.php:34
+msgid "Define your table rates here in order of priority."
+msgstr ""
+
+#: admin/table-rate-rows.php:34
+msgid "Duplicate selected rows"
+msgstr ""
+
+#: admin/table-rate-rows.php:34
+msgid "Delete selected rows"
+msgstr ""
+
+#: admin/table-rate-rows.php:157
+msgid "Delete the selected rates?"
+msgstr ""
+
+#: admin/table-rate-rows.php:189
+msgid "Duplicate the selected rates?"
+msgstr ""
+
+#: admin/table-rate-rows.php:273
+msgid "No shipping classes exist - you can ignore this option :)"
+msgstr ""
+
+#: admin/table-rate-rows.php:280
+msgid "Class"
+msgstr ""
+
+#: admin/table-rate-rows.php:281
+msgid "Priority"
+msgstr ""
+
+#: admin/table-rate-rows.php:287
+msgid ""
+"When calculating shipping, the cart contents will be <strong>searched for "
+"all shipping classes</strong>. If all product shipping classes are "
+"<strong>identical</strong>, the corresponding class will be used.<br/"
+"><strong>If there are a mix of classes</strong> then the class with the "
+"<strong>lowest number priority</strong> (defined above) will be used."
+msgstr ""
+
+#: admin/table-rate-rows.php:293
+msgid "Default"
+msgstr ""
+
+#: admin/views/html-table-rate-row.php:9
+msgid "Any class"
+msgstr ""
+
+#: admin/views/html-table-rate-row.php:10
+msgid "No class"
+msgstr ""
+
+#: admin/views/html-table-rate-row.php:17
+#: shipping-zones/includes/list-tables/class-wc-shipping-zones-table.php:156
+#: shipping-zones/includes/views/form-add-shipping-zone.php:28
+#: shipping-zones/includes/views/form-add-shipping-zone.php:47
+#: shipping-zones/includes/views/form-edit-shipping-zone.php:40
+#: shipping-zones/includes/views/form-edit-shipping-zone.php:59
+#: woocommerce-table-rate-shipping.php:270
+msgid "None"
+msgstr ""
+
+#: admin/views/html-table-rate-row.php:18
+msgid "Price"
+msgstr ""
+
+#: admin/views/html-table-rate-row.php:19
+msgid "Weight"
+msgstr ""
+
+#: admin/views/html-table-rate-row.php:20
+msgid "Item count"
+msgstr ""
+
+#: admin/views/html-table-rate-row.php:21
+msgid "Item count (same class)"
+msgstr ""
+
+#: admin/views/html-table-rate-row.php:24
+#: woocommerce-table-rate-shipping.php:284
+#: woocommerce-table-rate-shipping.php:292
+#: woocommerce-table-rate-shipping.php:300
+#: woocommerce-table-rate-shipping.php:313
+msgid "n/a"
+msgstr ""
+
+#: admin/views/html-table-rate-row.php:29
+msgid "Optional abort reason text"
+msgstr ""
+
+#: admin/views/html-table-rate-row.php:32
+#: admin/views/html-table-rate-row.php:35
+#: admin/views/html-table-rate-row.php:38
+#: admin/views/html-table-rate-row.php:41
+msgid "0"
+msgstr ""
+
+#: shipping-zones/class-wc-shipping-zones.php:35
+#: shipping-zones/includes/views/html-zone-list.php:2
+#: shipping-zones/includes/views/html-zone-method-settings.php:3
+#: shipping-zones/includes/views/html-zone-methods.php:3
+msgid "Shipping Zones"
+msgstr ""
+
+#: shipping-zones/class-wc-shipping-zones.php:45
+msgid "WooCommerce"
+msgstr ""
+
+#: shipping-zones/includes/class-wc-shipping-zone-admin.php:21
+msgid "Invalid shipping zone. <a href=\"%s\">Back to zones.</a>"
+msgstr ""
+
+#: shipping-zones/includes/class-wc-shipping-zone-admin.php:44
+msgid "Shipping method successfully created. <a href=\"%s\">View method.</a>"
+msgstr ""
+
+#: shipping-zones/includes/class-wc-shipping-zone-admin.php:46
+msgid "Invalid shipping method"
+msgstr ""
+
+#: shipping-zones/includes/class-wc-shipping-zone-admin.php:59
+msgid "Shipping method successfully deleted"
+msgstr ""
+
+#: shipping-zones/includes/class-wc-shipping-zone-admin.php:101
+msgid "Edit failed. Please try again."
+msgstr ""
+
+#: shipping-zones/includes/class-wc-shipping-zone-admin.php:109
+msgid "Shipping method saved successfully."
+msgstr ""
+
+#: shipping-zones/includes/class-wc-shipping-zone.php:118
+msgid "Everywhere else"
+msgstr ""
+
+#: shipping-zones/includes/class-wc-shipping-zones-admin.php:39
+msgid "Could not save zone. Please try again."
+msgstr ""
+
+#: shipping-zones/includes/class-wc-shipping-zones-admin.php:64
+msgid "Zone name is required"
+msgstr ""
+
+#: shipping-zones/includes/class-wc-shipping-zones-admin.php:67
+#: shipping-zones/includes/views/form-add-shipping-zone.php:11
+msgid "Zone"
+msgstr ""
+
+#: shipping-zones/includes/class-wc-shipping-zones-admin.php:73
+msgid " Zone type is required"
+msgstr ""
+
+#: shipping-zones/includes/class-wc-shipping-zones-admin.php:95
+msgid "You must choose at least 1 country to add a zone."
+msgstr ""
+
+#: shipping-zones/includes/class-wc-shipping-zones-admin.php:105
+msgid "You must choose at least 1 postcode to add postcode zone."
+msgstr ""
+
+#: shipping-zones/includes/class-wc-shipping-zones-admin.php:208
+msgid "Error saving zone."
+msgstr ""
+
+#: shipping-zones/includes/class-wc-shipping-zones-admin.php:214
+msgid "Shipping zone saved. <a href=\"%s\">Back to zones.</a>"
+msgstr ""
+
+#: shipping-zones/includes/class-wc-shipping-zones-admin.php:216
+msgid "Shipping zone saved."
+msgstr ""
+
+#: shipping-zones/includes/list-tables/class-wc-shipping-zone-methods-table.php:115
+#: shipping-zones/includes/list-tables/class-wc-shipping-zones-table.php:44
+msgid "Edit"
+msgstr ""
+
+#: shipping-zones/includes/list-tables/class-wc-shipping-zone-methods-table.php:115
+msgid "Are you sure you want to delete this method?"
+msgstr ""
+
+#: shipping-zones/includes/list-tables/class-wc-shipping-zone-methods-table.php:115
+#: shipping-zones/includes/list-tables/class-wc-shipping-zone-methods-table.php:156
+#: shipping-zones/includes/list-tables/class-wc-shipping-zones-table.php:197
+msgid "Delete"
+msgstr ""
+
+#: shipping-zones/includes/list-tables/class-wc-shipping-zone-methods-table.php:144
+#: woocommerce-table-rate-shipping.php:256
+msgid "Method Title"
+msgstr ""
+
+#: shipping-zones/includes/list-tables/class-wc-shipping-zone-methods-table.php:145
+msgid "Method Type"
+msgstr ""
+
+#: shipping-zones/includes/list-tables/class-wc-shipping-zone-methods-table.php:146
+#: shipping-zones/includes/list-tables/class-wc-shipping-zones-table.php:184
+msgid "Enabled"
+msgstr ""
+
+#: shipping-zones/includes/list-tables/class-wc-shipping-zone-methods-table.php:185
+msgid "Shipping methods deleted"
+msgstr ""
+
+#: shipping-zones/includes/list-tables/class-wc-shipping-zone-methods-table.php:193
+msgid "No shipping methods found."
+msgstr ""
+
+#: shipping-zones/includes/list-tables/class-wc-shipping-zones-table.php:44
+#: shipping-zones/includes/list-tables/class-wc-shipping-zones-table.php:46
+msgid "Configure shipping methods"
+msgstr ""
+
+#: shipping-zones/includes/list-tables/class-wc-shipping-zones-table.php:61
+msgid "Everywhere"
+msgstr ""
+
+#: shipping-zones/includes/list-tables/class-wc-shipping-zones-table.php:78
+msgid "and %s others"
+msgstr ""
+
+#: shipping-zones/includes/list-tables/class-wc-shipping-zones-table.php:99
+msgid "Within %s:"
+msgstr ""
+
+#: shipping-zones/includes/list-tables/class-wc-shipping-zones-table.php:111
+msgid "Countries"
+msgstr ""
+
+#: shipping-zones/includes/list-tables/class-wc-shipping-zones-table.php:113
+msgid "Countries and states"
+msgstr ""
+
+#: shipping-zones/includes/list-tables/class-wc-shipping-zones-table.php:115
+#: shipping-zones/includes/views/form-add-shipping-zone.php:67
+#: shipping-zones/includes/views/form-edit-shipping-zone.php:81
+msgid "Postcodes"
+msgstr ""
+
+#: shipping-zones/includes/list-tables/class-wc-shipping-zones-table.php:182
+msgid "Zone name"
+msgstr ""
+
+#: shipping-zones/includes/list-tables/class-wc-shipping-zones-table.php:183
+msgid "Zone type"
+msgstr ""
+
+#: shipping-zones/includes/list-tables/class-wc-shipping-zones-table.php:185
+msgid "Shipping Methods"
+msgstr ""
+
+#: shipping-zones/includes/list-tables/class-wc-shipping-zones-table.php:194
+msgid "Disable"
+msgstr ""
+
+#: shipping-zones/includes/list-tables/class-wc-shipping-zones-table.php:195
+#: shipping-zones/includes/views/form-edit-shipping-zone.php:16
+msgid "Enable"
+msgstr ""
+
+#: shipping-zones/includes/list-tables/class-wc-shipping-zones-table.php:234
+msgid "Shipping zones deleted"
+msgstr ""
+
+#: shipping-zones/includes/list-tables/class-wc-shipping-zones-table.php:250
+msgid "Shipping zones enabled"
+msgstr ""
+
+#: shipping-zones/includes/list-tables/class-wc-shipping-zones-table.php:266
+msgid "Shipping zones disabled"
+msgstr ""
+
+#: shipping-zones/includes/list-tables/class-wc-shipping-zones-table.php:287
+msgid "Default Zone (everywhere else)"
+msgstr ""
+
+#: shipping-zones/includes/list-tables/class-wc-shipping-zones-table.php:288
+msgid "All countries"
+msgstr ""
+
+#: shipping-zones/includes/views/form-add-shipping-zone.php:1
+msgid "Add Shipping Zone"
+msgstr ""
+
+#: shipping-zones/includes/views/form-add-shipping-zone.php:3
+msgid ""
+"Zones cover multiple countries (and states) and can have shipping methods "
+"assigned to them. Each customer will be assigned a single matching shipping "
+"zone in order of priority, and if no zones apply the \"default zone\" will "
+"be used."
+msgstr ""
+
+#: shipping-zones/includes/views/form-add-shipping-zone.php:5
+msgid ""
+"If you wish to disable shipping for a location, add a zone and assign no "
+"shipping methods to it."
+msgstr ""
+
+#: shipping-zones/includes/views/form-add-shipping-zone.php:10
+msgid "Zone Name"
+msgstr ""
+
+#: shipping-zones/includes/views/form-add-shipping-zone.php:14
+#: shipping-zones/includes/views/form-add-shipping-zone.php:16
+#: shipping-zones/includes/views/form-edit-shipping-zone.php:24
+#: shipping-zones/includes/views/form-edit-shipping-zone.php:28
+msgid "Zone Type"
+msgstr ""
+
+#: shipping-zones/includes/views/form-add-shipping-zone.php:18
+#: shipping-zones/includes/views/form-edit-shipping-zone.php:30
+msgid "This shipping zone is based on one or more countries"
+msgstr ""
+
+#: shipping-zones/includes/views/form-add-shipping-zone.php:21
+#: shipping-zones/includes/views/form-add-shipping-zone.php:53
+#: shipping-zones/includes/views/form-edit-shipping-zone.php:33
+#: shipping-zones/includes/views/form-edit-shipping-zone.php:65
+msgid "Choose countries&hellip;"
+msgstr ""
+
+#: shipping-zones/includes/views/form-add-shipping-zone.php:28
+#: shipping-zones/includes/views/form-add-shipping-zone.php:47
+#: shipping-zones/includes/views/form-edit-shipping-zone.php:40
+#: shipping-zones/includes/views/form-edit-shipping-zone.php:59
+msgid "All"
+msgstr ""
+
+#: shipping-zones/includes/views/form-add-shipping-zone.php:28
+#: shipping-zones/includes/views/form-add-shipping-zone.php:47
+#: shipping-zones/includes/views/form-edit-shipping-zone.php:40
+#: shipping-zones/includes/views/form-edit-shipping-zone.php:59
+msgid "EU States"
+msgstr ""
+
+#: shipping-zones/includes/views/form-add-shipping-zone.php:31
+msgid "This shipping zone is based on one of more states and counties"
+msgstr ""
+
+#: shipping-zones/includes/views/form-add-shipping-zone.php:34
+#: shipping-zones/includes/views/form-edit-shipping-zone.php:46
+msgid "Choose states/counties&hellip;"
+msgstr ""
+
+#: shipping-zones/includes/views/form-add-shipping-zone.php:47
+#: shipping-zones/includes/views/form-edit-shipping-zone.php:59
+msgid "US States"
+msgstr ""
+
+#: shipping-zones/includes/views/form-add-shipping-zone.php:50
+#: shipping-zones/includes/views/form-edit-shipping-zone.php:62
+msgid "This shipping zone is based on one of more postcodes/zips"
+msgstr ""
+
+#: shipping-zones/includes/views/form-add-shipping-zone.php:67
+#: shipping-zones/includes/views/form-edit-shipping-zone.php:81
+msgid ""
+"List 1 postcode per line. Wildcards (*) and ranges (for numeric postcodes) "
+"are supported."
+msgstr ""
+
+#: shipping-zones/includes/views/form-add-shipping-zone.php:74
+msgid "Add shipping zone"
+msgstr ""
+
+#: shipping-zones/includes/views/form-edit-shipping-zone.php:2
+msgid "Edit Shipping Zone"
+msgstr ""
+
+#: shipping-zones/includes/views/form-edit-shipping-zone.php:8
+msgid "Name"
+msgstr ""
+
+#: shipping-zones/includes/views/form-edit-shipping-zone.php:11
+msgid "Enter a name which describes this zone"
+msgstr ""
+
+#: shipping-zones/includes/views/form-edit-shipping-zone.php:19
+msgid "Enable this zone"
+msgstr ""
+
+#: shipping-zones/includes/views/form-edit-shipping-zone.php:43
+msgid "This shipping zone is based on one of more states/counties"
+msgstr ""
+
+#: shipping-zones/includes/views/form-edit-shipping-zone.php:95
+msgid "Save changes"
+msgstr ""
+
+#: shipping-zones/includes/views/html-zone-method-settings.php:6
+msgid "Save shipping method"
+msgstr ""
+
+#: shipping-zones/includes/views/html-zone-methods.php:6
+msgid "Choose a shipping method&hellip;"
+msgstr ""
+
+#: shipping-zones/includes/views/html-zone-methods.php:22
+msgid "Add To Zone"
+msgstr ""
+
+#: woocommerce-table-rate-shipping.php:75
+msgid "View Documentation"
+msgstr ""
+
+#: woocommerce-table-rate-shipping.php:75
+msgid "Docs"
+msgstr ""
+
+#: woocommerce-table-rate-shipping.php:76
+msgid "Visit Premium Customer Support Forum"
+msgstr ""
+
+#: woocommerce-table-rate-shipping.php:76
+msgid "Premium Support"
+msgstr ""
+
+#: woocommerce-table-rate-shipping.php:120
+msgid ""
+"<strong>Table Rates is installed</strong> &#8211; Add some shipping zones to "
+"get started :)"
+msgstr ""
+
+#: woocommerce-table-rate-shipping.php:121
+msgid "Setup Zones"
+msgstr ""
+
+#: woocommerce-table-rate-shipping.php:121
+msgid "Documentation"
+msgstr ""
+
+#: woocommerce-table-rate-shipping.php:166
+msgid "Table rates"
+msgstr ""
+
+#: woocommerce-table-rate-shipping.php:186
+#: woocommerce-table-rate-shipping.php:260
+msgid "Table Rate"
+msgstr ""
+
+#: woocommerce-table-rate-shipping.php:250
+msgid "Enable/Disable"
+msgstr ""
+
+#: woocommerce-table-rate-shipping.php:252
+msgid "Enable this table rate"
+msgstr ""
+
+#: woocommerce-table-rate-shipping.php:259
+msgid "This controls the title which the user sees during checkout."
+msgstr ""
+
+#: woocommerce-table-rate-shipping.php:263
+msgid "Tax Status"
+msgstr ""
+
+#: woocommerce-table-rate-shipping.php:269
+msgid "Taxable"
+msgstr ""
+
+#: woocommerce-table-rate-shipping.php:274
+msgid "Additional Costs (per-order, item, line or class)"
+msgstr ""
+
+#: woocommerce-table-rate-shipping.php:275
+msgid "These costs are applied based on the \"Calculation Type\" option below."
+msgstr ""
+
+#: woocommerce-table-rate-shipping.php:280
+msgid "Handling Fee"
+msgstr ""
+
+#: woocommerce-table-rate-shipping.php:282
+msgid ""
+"Handling fee excluding tax. Enter an amount, e.g. 2.50, or a percentage, e."
+"g. 5%. Leave blank to disable. Applied based on the \"Calculation Type\" "
+"chosen below."
+msgstr ""
+
+#: woocommerce-table-rate-shipping.php:287
+msgid "Minimum Cost"
+msgstr ""
+
+#: woocommerce-table-rate-shipping.php:290
+msgid ""
+"Minimum cost for this shipping method (optional). If the cost is lower, this "
+"minimum cost will be enforced."
+msgstr ""
+
+#: woocommerce-table-rate-shipping.php:295
+msgid "Maximum Cost"
+msgstr ""
+
+#: woocommerce-table-rate-shipping.php:298
+msgid ""
+"Maximum cost for this shipping method (optional). If the cost is higher, "
+"this maximum cost will be enforced."
+msgstr ""
+
+#: woocommerce-table-rate-shipping.php:303
+#: woocommerce-table-rate-shipping.php:350
+msgid "Rates"
+msgstr ""
+
+#: woocommerce-table-rate-shipping.php:305
+msgid ""
+"This is where you define your table rates which are applied to an order."
+msgstr ""
+
+#: woocommerce-table-rate-shipping.php:309
+msgid "Order Handling Fee"
+msgstr ""
+
+#: woocommerce-table-rate-shipping.php:311
+msgid ""
+"Enter an amount, e.g. 2.50, or leave blank to disable. This cost is applied "
+"once for the order as a whole."
+msgstr ""
+
+#: woocommerce-table-rate-shipping.php:316
+msgid "Calculation Type"
+msgstr ""
+
+#: woocommerce-table-rate-shipping.php:318
+msgid ""
+"Per order rates will offer the customer all matching rates. Calculated rates "
+"will sum all matching rates and provide a single total."
+msgstr ""
+
+#: woocommerce-table-rate-shipping.php:322
+msgid "Per order"
+msgstr ""
+
+#: woocommerce-table-rate-shipping.php:323
+msgid "Calculated rates per item"
+msgstr ""
+
+#: woocommerce-table-rate-shipping.php:324
+msgid "Calculated rates per line item"
+msgstr ""
+
+#: woocommerce-table-rate-shipping.php:325
+msgid "Calculated rates per shipping class"
+msgstr ""
+
+#: woocommerce-table-rate-shipping.php:356
+msgid "Class Priorities"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "WooCommerce Table Rate Shipping"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "http://www.woothemes.com/products/table-rate-shipping-2/"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"Table rate shipping lets you define rates depending on location vs shipping "
+"class, price, weight, or item count."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Mike Jolley"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://mikejolley.com"
+msgstr ""

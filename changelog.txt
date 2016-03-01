@@ -1,0 +1,209 @@
+*** Table Rate Shipping Changelog ***
+
+2015.11.20 - version 2.9.2
+* Fix - Escape postcodes passed to queries.
+
+2015.11.18 - version 2.9.1
+* Fix - No matching rates when table rate has 'No Class' rule.
+* Fix - Coupons not taken into account when looping through shipping methods.
+
+2015.05.12 - version 2.9.0
+* Removed legacy notice code.
+* Reorganised options
+* Added new max cost option.
+* Hide shipping classes when unused.
+
+2015.04.21 - version 2.8.3
+* Fix - Potential XSS with add_query_arg.
+
+2015.02.17 - version 2.8.2
+* Fix - Postcode save method.
+
+2015.02.11 - version 2.8.1
+* Fix - Fatal error in cart and checkout when trying to register the shipping methods.
+
+2015.01.29 - version 2.8.0
+* WC 2.3 Compatibility.
+* Refactored shipping zone framework.
+
+2014.12.03 - version 2.7.2
+* Fixed order type abort. It should abort and offer no rates from the table.
+
+2014.10.14 - version 2.7.1
+* Fix JS error when abort is selected.
+
+2014.10.08 - version 2.7.0
+* Row cleanup.
+* Additonal logic to 'abort' a table rate if a row matches.
+* Show optional message on abort.
+* Added option for order handling fee (base cost).
+* Added option for max cost.
+* Updated text domain.
+* Fix display of disabled inputs.
+
+2014.01.28 - version 2.6.10
+* Only show debugging if set to display
+
+2014.01.06 - version 2.6.9
+* 2.1 compat
+
+2013.12.02 - version 2.6.8
+* Hooks for WPML
+
+2013.11.21 - version 2.6.7
+* Hook when getting product price during calculation
+
+2013.08.13 - version 2.6.6
+* Fix zone ordering
+
+2013.04.25 - version 2.6.5
+* sanitize_text_field on state names
+
+2013.04.22 - version 2.6.4
+* Removed uninstall scripts
+
+2013.04.19 - version 2.6.3
+* Round weights to 2dp
+
+2013.03.15 - version 2.6.2
+* Fix numeric ranges
+
+2013.03.13 - version 2.6.1
+* Localisation for zones
+
+2013.01.29 - version 2.6.0
+* Shipping Zone interface update
+
+2013.01.29 - version 2.5.2
+* Correctly cast the shipping class id
+
+2013.01.21 - version 2.5.1
+* esc_js on class name
+
+2013.01.11 - version 2.5.0
+* WC 2.0 Compat
+
+2012.12.13 - version 2.4.1
+* Fix prepare
+* Fix class != check
+
+2012.11.26 - version 2.4.0
+* Previous version class priorities has been removed in favour of running the rates in order of definition.
+* Min cost option per table rate.
+* New updater
+
+2012.11.26 - version 2.3.0
+* Fixed method enable/disable setting.
+* Choose the order in which classes are evalulated for per-class rates.
+
+2012.11.06 - version 2.2.2
+* Fix matched rates when using the break option.
+
+2012.11.06 - version 2.2.1
+* Fix labels
+
+2012.11.05 - version 2.2
+* For stores with tax inc prices, calculate correct item price with local tax.
+* Added debug mode - kicks in when WP_DEBUG is on.
+* Fix shipping_condition none.
+* Renamed 'priority' to 'break' to make more sense.
+* Allow label translation.
+
+2012.10.23 - version 2.1.3
+* Calculated rate tweak - a row much match or 0 priced rates will be ignored
+* Ensure transients are cleared on save
+
+2012.10.05 - version 2.1.2
+* Fix insert on some systems
+* Fix default shipping_method_order in table
+
+2012.10.05 - version 2.1.1
+* Tweak some text descriptions
+
+2012.10.03 - version 2.1.0
+* Ability to sort methods within zones to control the order on the frontend
+
+2012.08.20 - version 2.0.6
+* Fix 'Any Shipping Class'
+
+2012.08.14 - version 2.0.5
+* Fix priority checkbox for per-class rates
+
+2012.07.26 - version 2.0.4
+* Set default title for instances - labels are required so this fixes things when title is not set
+* Fix get_cart_shipping_class_id function
+
+2012.07.19 - version 2.0.3
+* First release
+
+2012.06.25 - version 2.0.2 Beta
+* Fix state detection for zones
+* Fix count items in class
+* Fix no shipping class query
+* Don't hide empty shipping classes
+* 'None' condition
+
+2012.06.12 - version 2.0.1 Beta
+* Fix zone dropdown for states
+
+2012.04.19 - version 2.0 Beta
+* Re-write based on user feedback. Due to the massive restructure, and new zones functionality it isn't possible to upgrade your old rates - you will need to re-enter them (however, due to the zones and new features this process should be much easier!)
+* Re-done the interface for efficiency
+* Introduction of shipping zones to simplify data entry
+* Allow costs to be defined with 4dp to prevent rounding issues
+* items_in_class condition, if you only want to count items of the priority class
+* Rates stored in a table rather than serialised for improved reliability
+* Calculated rates (add matching rules together)
+* Per item, per line, per class rules for calculated rates
+* Multiple table rate instances per zone
+* Define costs per item, per weight unit, and a percent of the total
+
+2012.02.09 - version 1.5.1
+* Weights/item count did not consider quantity
+
+2012.02.09 - version 1.5
+* Mixed carts - when using a shipping class, only count items in said class when using item # rules
+* Weight and price and count only for items that need shipping
+
+2012.02.09 - version 1.4.4
+* Postcode - don't remove spaces
+
+2012.02.09 - version 1.4.3
+* Postcode case fix
+
+2012.02.02 - version 1.4.2
+* Empty label fix
+
+2012.02.01 - version 1.4.1
+* Logic bug with priority rates
+
+2012.01.26 - version 1.4
+* WC 1.4 Compatibility (shipping rate API)
+
+2011.12.15 - version 1.3
+* Support for the new 'Product Shipping Classes' in WC 1.3. This means you can have different table rates for different groups of products.
+* Drag and drop rates to re-order by priority
+* 'Priority' option if you want a rate to be the *only* one used if matched
+
+2011.12.01 - version 1.2
+* Woo Updater
+* Made use of WC 1.3 Settings API
+* 'Chosen' input to aid adding rates
+
+2011.11.15 - version 1.1.2
+* Changed textdomain
+
+2011.11.15 - version 1.1.1
+* Changed text domain
+
+2011.10.27 - version 1.1
+* Changed the way countries are defined to improve performance
+* Shortcuts for EU countries/US States
+* Postcodes can now be comma separated
+* Ability to exclude postcodes
+
+2011.10.06 - version 1.0.1
+* Fixed rates when state is chosen/entered
+
+2011.09.27 - version 1.0
+* First Release
