@@ -1,0 +1,52 @@
+table#shipping_rates, #shipping_class_priorities table {
+	input, select {
+		width: 100%;
+	}
+	input[type=checkbox] {
+		width: auto;
+	}
+	td {
+		cursor: move;
+	}
+	a.remove, a.dupe {
+		float: right;
+		margin-left: 4px;
+	}
+	td, th {
+		padding: 15px 10px;
+		vertical-align: middle;
+	}
+	tr:nth-child(even) {
+		td {
+			background: #fafafa;
+		}
+	}
+	td.minmax {
+		input {
+			width: 50%;
+			margin: 0;
+		}
+		input:first-child {
+			border-right: 0;
+		}
+	}
+	th.checkbox, td.checkbox {
+		text-align: center;
+	}
+	td {
+		.disabled {
+			opacity: .5;
+		}
+	}
+	.check-column {
+		width: 24px;
+		min-width: 24px !important;
+		text-align: center;
+		padding: 15px 10px;
+		input {
+			width: auto;
+			vertical-align: middle;
+			margin: 0 0 0 8px;
+		}
+	}
+}
