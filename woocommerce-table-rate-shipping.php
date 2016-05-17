@@ -322,6 +322,8 @@ if ( is_woocommerce_active() ) {
 						'placeholder' => __( 'n/a', 'woocommerce-table-rate-shipping' )
 					),
 				);
+				
+				$this->instance_fields = apply_filters( 'woocommerce_table_rate_instance_fields', $this->instance_fields );
 
 			}
 
