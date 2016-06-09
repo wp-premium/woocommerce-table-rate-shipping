@@ -40,7 +40,7 @@
 						        <p><button class="select_all button"><?php _e('All', SHIPPING_ZONES_TEXTDOMAIN); ?></button><button class="select_none button"><?php _e('None', SHIPPING_ZONES_TEXTDOMAIN); ?></button><button class="button select_europe"><?php _e('EU States', SHIPPING_ZONES_TEXTDOMAIN); ?></button></p>
 					        </div>
 
-							<p><label><input type="radio" name="zone_type" value="states" id="zone_type" class="input-radio" <?php checked( $zone->zone_type, 'states' ); ?> /> <?php _e( 'This shipping zone is based on one of more states/counties', SHIPPING_ZONES_TEXTDOMAIN ); ?></label></p>
+							<p><label><input type="radio" name="zone_type" value="states" id="zone_type" class="input-radio" <?php checked( $zone->zone_type, 'states' ); ?> /> <?php _e( 'This shipping zone is based on one or more states/counties', SHIPPING_ZONES_TEXTDOMAIN ); ?></label></p>
 
 							<div class="zone_type_options zone_type_states">
 								<select multiple="multiple" name="zone_type_states[]" style="width:450px;" data-placeholder="<?php _e('Choose states/counties&hellip;', SHIPPING_ZONES_TEXTDOMAIN); ?>"  class="chosen_select">
@@ -59,7 +59,7 @@
 			                	<p><button class="select_all button"><?php _e( 'All', SHIPPING_ZONES_TEXTDOMAIN ); ?></button><button class="select_none button"><?php _e( 'None', SHIPPING_ZONES_TEXTDOMAIN ); ?></button><button class="button select_us_states"><?php _e( 'US States', 'wc-shipping-zones '); ?></button><button class="button select_europe"><?php _e( 'EU States', SHIPPING_ZONES_TEXTDOMAIN ); ?></button></p>
 					        </div>
 
-							<p><label><input type="radio" name="zone_type" value="postcodes" id="zone_type" class="input-radio" <?php checked( $zone->zone_type, 'postcodes' ); ?> /> <?php _e( 'This shipping zone is based on one of more postcodes/zips', SHIPPING_ZONES_TEXTDOMAIN ); ?></label></p>
+							<p><label><input type="radio" name="zone_type" value="postcodes" id="zone_type" class="input-radio" <?php checked( $zone->zone_type, 'postcodes' ); ?> /> <?php _e( 'This shipping zone is based on one or more postcodes/zips', SHIPPING_ZONES_TEXTDOMAIN ); ?></label></p>
 
 							<div class="zone_type_options zone_type_postcodes">
 								<select name="zone_type_postcodes" style="width:450px;" data-placeholder="<?php _e('Choose countries&hellip;', SHIPPING_ZONES_TEXTDOMAIN); ?>" title="Country" class="chosen_select">

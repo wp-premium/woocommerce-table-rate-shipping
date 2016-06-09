@@ -1,5 +1,11 @@
 *** Table Rate Shipping Changelog ***
 
+2016.06.09 - version 3.0.1
+* Fix - Undefined method get_field_default which introduced in WC 2.6
+
+2616.05.24 - version 3.0.0
+* Implemented WC 2.6.0 Support and new data structures.
+
 2015.11.20 - version 2.9.2
 * Fix - Escape postcodes passed to queries.
 
