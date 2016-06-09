@@ -50,8 +50,8 @@ class WC_Shipping_Zones {
 	 * Enqueue scripts and styles
 	 */
 	public static function zones_page_scripts() {
-		wp_enqueue_style( 'wc-shipping-zones-styles', plugins_url( '/shipping-zones/assets/css/shipping_zones.css', dirname( __FILE__ ) ) );
-		wp_enqueue_script( SHIPPING_ZONES_TEXTDOMAIN, plugins_url( '/shipping-zones/assets/js/shipping-zone-admin.js', dirname( __FILE__ ) ), array( 'jquery' ), '2.0', true );
+		wp_enqueue_style( 'wc-shipping-zones-styles', plugins_url( 'includes/legacy/shipping-zones/assets/css/shipping_zones.css', dirname( dirname( dirname( __FILE__) ) ) ) );
+		wp_enqueue_script( SHIPPING_ZONES_TEXTDOMAIN, plugins_url( 'includes/legacy/shipping-zones/assets/js/shipping-zone-admin.js', dirname( dirname( dirname( __FILE__) ) ) ), array( 'jquery' ), '2.0', true );
 		wp_localize_script(
 			SHIPPING_ZONES_TEXTDOMAIN,
 			'wc_shipping_zones_params',

@@ -93,7 +93,7 @@ class WC_Shipping_Zone_Methods_Table extends WP_List_Table {
         return sprintf(
             '<input type="checkbox" name="%1$s[]" value="%2$s" />',
             'shipping_method_id',
-            $item->number
+            $item->instance_id
         );
     }
 
@@ -110,9 +110,9 @@ class WC_Shipping_Zone_Methods_Table extends WP_List_Table {
         }
 
         return '
-            <strong><a href="' . esc_url( add_query_arg( 'method', $item->number, add_query_arg( 'zone',  $this->zone_id, admin_url( 'admin.php?page=shipping_zones' ) ) ) ) . '">' . esc_html( $title ) . '</a></strong>
+            <strong><a href="' . esc_url( add_query_arg( 'method', $item->instance_id, add_query_arg( 'zone', $this->zone_id, admin_url( 'admin.php?page=shipping_zones' ) ) ) ) . '">' . esc_html( $title ) . '</a></strong>
             <div class="row-actions">
-                <span class="id">ID: ' . esc_html( $item->instance_id ) . ' | </span><span><a href="' . esc_url( add_query_arg( 'method', $item->number, add_query_arg( 'zone', $this->zone_id, admin_url( 'admin.php?page=shipping_zones' ) ) ) ) . '">' . __( 'Edit' , SHIPPING_ZONES_TEXTDOMAIN ) . '</a> | </span><span class="trash"><a class="shipping-zone-delete" href="' . esc_url( wp_nonce_url( add_query_arg( 'delete_method', $item->number ), 'woocommerce_delete_method' ) ) . '" data-message="' . esc_attr( __( 'Are you sure you want to delete this method?', SHIPPING_ZONES_TEXTDOMAIN ) ) . '">' . __( 'Delete', SHIPPING_ZONES_TEXTDOMAIN ) . '</a></span>
+                <span class="id">ID: ' . esc_html( $item->instance_id ) . ' | </span><span><a href="' . esc_url( add_query_arg( 'method', $item->instance_id, add_query_arg( 'zone', $this->zone_id, admin_url( 'admin.php?page=shipping_zones' ) ) ) ) . '">' . __( 'Edit' , SHIPPING_ZONES_TEXTDOMAIN ) . '</a> | </span><span class="trash"><a class="shipping-zone-delete" href="' . esc_url( wp_nonce_url( add_query_arg( 'delete_method', $item->instance_id ), 'woocommerce_delete_method' ) ) . '" data-message="' . esc_attr( __( 'Are you sure you want to delete this method?', SHIPPING_ZONES_TEXTDOMAIN ) ) . '">' . __( 'Delete', SHIPPING_ZONES_TEXTDOMAIN ) . '</a></span>
             </div>';
     }
 
