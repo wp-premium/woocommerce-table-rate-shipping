@@ -1,12 +1,17 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * wc_table_rate_admin_shipping_rows function.
  *
  * @access public
- * @param mixed $table_rate_shipping
+ * @param WC_Shipping_Table_Rate $instance
  */
-function wc_table_rate_admin_shipping_rows( $table_rate_shipping ) {
+function wc_table_rate_admin_shipping_rows( $instance ) {
+	wp_enqueue_script( 'woocommerce_shipping_table_rate_rows' );
+
 	// Get shipping classes
 	$shipping_classes = get_terms( 'product_shipping_class', 'hide_empty=0' );
 	?>
@@ -30,243 +35,66 @@ function wc_table_rate_admin_shipping_rows( $table_rate_shipping ) {
 		</thead>
 		<tfoot>
 			<tr>
-				<th colspan="2"><a href="#" class="add button button-primary"><?php _e('Add Shipping Rate', 'woocommerce-table-rate-shipping'); ?></a></th>
+				<th colspan="2"><a href="#" class="add-rate button button-primary"><?php _e('Add Shipping Rate', 'woocommerce-table-rate-shipping'); ?></a></th>
 				<th colspan="9"><span class="description"><?php _e('Define your table rates here in order of priority.', 'woocommerce-table-rate-shipping'); ?></span> <a href="#" class="dupe button"><?php _e('Duplicate selected rows', 'woocommerce-table-rate-shipping'); ?></a> <a href="#" class="remove button"><?php _e('Delete selected rows', 'woocommerce-table-rate-shipping'); ?></a></th>
 			</tr>
 		</tfoot>
-		<tbody class="table_rates">
-    	<?php
-    	$i = -1; foreach( $table_rate_shipping->get_shipping_rates() as $rate ) { $i++;
-			include( 'views/html-table-rate-row.php' );
-    	}
-    	?>
-    	</tbody>
-    </table>
-
+		<tbody class="table_rates" data-rates="<?php echo esc_attr( wp_json_encode( $instance->get_shipping_rates() ) ); ?>"></tbody>
+	</table>
+	<script type="text/template" id="tmpl-table-rate-shipping-row-template">
+		<tr class="table_rate">
+			<td class="check-column">
+				<input type="checkbox" name="select" />
+				<input type="hidden" class="rate_id" name="rate_id[{{{ data.index }}}]" value="{{{ data.rate.rate_id }}}" />
+			</td>
+			<?php if ( sizeof( $shipping_classes ) ) : ?>
+				<td>
+					<select class="select" name="shipping_class[{{{ data.index }}}]" style="min-width:100px;">
+						<option value="" <# if ( "" === data.rate.rate_class ) { #>selected="selected"<# } #>><?php _e( 'Any class', 'woocommerce-table-rate-shipping' ); ?></option>
+						<option value="0" <# if ( "0" === data.rate.rate_class ) { #>selected="selected"<# } #>><?php _e( 'No class', 'woocommerce-table-rate-shipping' ); ?></option>
+						<?php foreach ( $shipping_classes as $class ) : ?>
+							<option value="<?php echo esc_attr( $class->term_id ); ?>" <# if ( "<?php echo esc_attr( $class->term_id ); ?>" === data.rate.rate_class ) { #>selected="selected"<# } #>><?php echo esc_html( $class->name ); ?></option>
+						<?php endforeach; ?>
+					</select>
+				</td>
+			<?php endif; ?>
+			<td>
+				<select class="select" name="shipping_condition[{{{ data.index }}}]" style="min-width:100px;">
+					<option value="" <# if ( "" === data.rate.rate_condition ) { #>selected="selected"<# } #>><?php _e( 'None', 'woocommerce-table-rate-shipping' ); ?></option>
+					<option value="price" <# if ( "price" === data.rate.rate_condition ) { #>selected="selected"<# } #>><?php _e( 'Price', 'woocommerce-table-rate-shipping'); ?></option>
+					<option value="weight" <# if ( "weight" === data.rate.rate_condition ) { #>selected="selected"<# } #>><?php _e( 'Weight', 'woocommerce-table-rate-shipping'); ?></option>
+					<option value="items" <# if ( "items" === data.rate.rate_condition ) { #>selected="selected"<# } #>><?php _e( 'Item count', 'woocommerce-table-rate-shipping'); ?></option>
+					<?php if ( sizeof( $shipping_classes ) ) : ?>
+						<option value="items_in_class" <# if ( "items_in_class" === data.rate.rate_condition ) { #>selected="selected"<# } #>><?php _e( 'Item count (same class)', 'woocommerce-table-rate-shipping' ); ?></option>
+					<?php endif; ?>
+				</select>
+			</td>
+			<td class="minmax">
+				<input type="text" class="text" value="{{{ data.rate.rate_min }}}" name="shipping_min[{{{ data.index }}}]" placeholder="<?php _e( 'n/a', 'woocommerce-table-rate-shipping' ); ?>" size="4" /><input type="text" class="text" value="{{{ data.rate.rate_max }}}" name="shipping_max[{{{ data.index }}}]" placeholder="<?php _e( 'n/a', 'woocommerce-table-rate-shipping' ); ?>" size="4" />
+			</td>
+			<td width="1%" class="checkbox"><input type="checkbox" <# if ( '1' === data.rate.rate_priority ) { #>checked="checked"<# } #> class="checkbox" name="shipping_priority[{{{ data.index }}}]" /></td>
+			<td width="1%" class="checkbox"><input type="checkbox" <# if ( '1' === data.rate.rate_abort ) { #>checked="checked"<# } #> class="checkbox" name="shipping_abort[{{{ data.index }}}]" /></td>
+			<td colspan="4" class="abort_reason">
+				<input type="text" class="text" value="{{{ data.rate.rate_abort_reason }}}" placeholder="<?php _e( 'Optional abort reason text', 'woocommerce-table-rate-shipping' ); ?>" name="shipping_abort_reason[{{{ data.index }}}]" />
+			</td>
+			<td class="cost">
+				<input type="text" class="text" value="{{{ data.rate.rate_cost }}}" name="shipping_cost[{{{ data.index }}}]" placeholder="<?php _e( '0', 'woocommerce-table-rate-shipping' ); ?>" size="4" />
+			</td>
+			<td class="cost cost_per_item">
+				<input type="text" class="text" value="{{{ data.rate.rate_cost_per_item }}}" name="shipping_per_item[{{{ data.index }}}]" placeholder="<?php _e( '0', 'woocommerce-table-rate-shipping' ); ?>" size="4" />
+			</td>
+			<td class="cost cost_per_weight">
+				<input type="text" class="text" value="{{{ data.rate.rate_cost_per_weight_unit }}}" name="shipping_cost_per_weight[{{{ data.index }}}]" placeholder="<?php _e( '0', 'woocommerce-table-rate-shipping' ); ?>" size="4" />
+			</td>
+			<td class="cost cost_percent">
+				<input type="text" class="text" value="{{{ data.rate.rate_cost_percent }}}" name="shipping_cost_percent[{{{ data.index }}}]" placeholder="<?php _e( '0', 'woocommerce-table-rate-shipping' ); ?>" size="4" />
+			</td>
+			<td class="shipping_label">
+				<input type="text" class="text" value="{{{ data.rate.rate_label }}}" name="shipping_label[{{{ data.index }}}]" size="8" />
+			</td>
+		</tr>
+	</script>
 	<?php
-
-	// Javascript for Table Rates admin
-	ob_start();
-	?>
-	// Labels
-	jQuery('label[for="woocommerce_table_rate_handling_fee"], label[for="woocommerce_table_rate_max_cost"], label[for="woocommerce_table_rate_min_cost"]').each(function( i, el ) {
-		jQuery(el).data( 'o_label', jQuery(el).text() );
-	});
-
-	// Options which depend on calc type
-	jQuery('#woocommerce_table_rate_calculation_type').change(function(){
-
-		var selected = jQuery( this ).val();
-
-		if ( selected == 'item' ) {
-			jQuery( 'td.cost_per_item input' ).attr( 'disabled', 'disabled' ).addClass('disabled');
-		} else {
-			jQuery( 'td.cost_per_item input' ).removeAttr( 'disabled' ).removeClass('disabled');
-		}
-
-		if ( selected ) {
-			jQuery( '#shipping_class_priorities' ).hide();
-			jQuery( 'td.shipping_label, th.shipping_label' ).hide();
-		} else {
-			jQuery( '#shipping_class_priorities' ).show();
-			jQuery( 'td.shipping_label, th.shipping_label' ).show();
-		}
-
-		if ( ! selected ) {
-			jQuery( '#shipping_class_priorities span.description.per_order' ).show();
-			jQuery( '#shipping_class_priorities span.description.per_class' ).hide();
-		}
-
-		var label_text = '<?php _e( 'Order', 'woocommerce-table-rate-shipping' ); ?>';
-
-		if ( selected == 'item' ) {
-			label_text = '<?php _e( 'Item', 'woocommerce-table-rate-shipping' ); ?>';
-		} else if ( selected == 'line' ) {
-			label_text = '<?php _e( 'Line Item', 'woocommerce-table-rate-shipping' ); ?>';
-		} else if ( selected == 'class' ) {
-			label_text = '<?php _e( 'Class', 'woocommerce-table-rate-shipping' ); ?>';
-		}
-
-		jQuery('label[for="woocommerce_table_rate_handling_fee"], label[for="woocommerce_table_rate_max_cost"], label[for="woocommerce_table_rate_min_cost"]').each(function( i, el ) {
-			var text  = jQuery(el).data( 'o_label' );
-			text = text.replace( '[item]', label_text );
-			jQuery(el).text( text );
-		});
-
-	}).change();
-
-	// shipping_condition select box
-	jQuery('#shipping_rates').on( 'change', 'select[name^="shipping_condition"]', function() {
-		var selected = jQuery( this ).val();
-		var $row 	 = jQuery( this ).closest('tr');
-
-		if ( selected == '' ) {
-
-			$row.find('input[name^="shipping_min"], input[name^="shipping_max"]').val('').attr('disabled', 'disabled').addClass('disabled');
-
-		} else {
-
-			$row.find('input[name^="shipping_min"], input[name^="shipping_max"]').removeAttr('disabled').removeClass('disabled');
-
-		}
-	} );
-
-	jQuery('select[name^="shipping_condition"]').change();
-
-	// Abort select box
-	jQuery('#shipping_rates').on( 'change', 'input[name^="shipping_abort["]', function() {
-		var checked = jQuery( this ).is(':checked');
-		var $row 	= jQuery( this ).closest('tr');
-
-		if ( checked ) {
-
-			$row.find('td.cost').hide();
-			$row.find('td.abort_reason').show();
-			$row.find('input[name^="shipping_per_item"], input[name^="shipping_cost_per_weight"], input[name^="shipping_cost_percent"], input[name^="shipping_cost"], input[name^="shipping_label"]').attr('disabled', 'disabled').addClass('disabled');
-
-		} else {
-
-			$row.find('td.cost').show();
-			$row.find('td.abort_reason').hide();
-			$row.find('input[name^="shipping_per_item"], input[name^="shipping_cost_per_weight"], input[name^="shipping_cost_percent"], input[name^="shipping_cost"], input[name^="shipping_label"]').removeAttr('disabled').removeClass('disabled');
-
-		}
-
-		jQuery('#woocommerce_table_rate_calculation_type').change();
-	});
-	jQuery('input[name^="shipping_abort["]').change();
-
-	// Add rates
-	jQuery('#shipping_rates').on( 'click', 'a.add', function() {
-
-		var size = jQuery('tbody.table_rates .table_rate').size();
-
-		jQuery('<?php
-			$rate                            = new stdClass();
-			$rate->rate_id                   = '';
-			$rate->rate_class                = '';
-			$rate->rate_condition            = '';
-			$rate->rate_min                  = '';
-			$rate->rate_max                  = '';
-			$rate->rate_priority             = '';
-			$rate->rate_abort                = '';
-			$rate->rate_abort_reason         = '';
-			$rate->rate_cost                 = '';
-			$rate->rate_cost_per_item        = '';
-			$rate->rate_cost_per_weight_unit = '';
-			$rate->rate_cost_percent         = '';
-			$rate->rate_label                = '';
-			$i                               = "{ROW_I}";
-			ob_start();
-			include( 'views/html-table-rate-row.php' );
-			echo str_replace( '{ROW_I}', "' + size + '", addslashes( str_replace( array( "\r", "\t", "\n" ), "",  ob_get_clean() ) ) );
-		?>').appendTo('#shipping_rates tbody.table_rates');
-
-		jQuery('#woocommerce_table_rate_calculation_type').change();
-		jQuery('select[name^="shipping_condition"]').change();
-		jQuery('input[name^="shipping_abort"]').change();
-
-		return false;
-	});
-
-	// Remove rows
-	jQuery('#shipping_rates').on( 'click', 'a.remove', function() {
-		var answer = confirm("<?php _e('Delete the selected rates?', 'woocommerce-table-rate-shipping'); ?>")
-		if (answer) {
-
-			var rate_ids  = [];
-
-			jQuery('#shipping_rates tbody.table_rates tr td.check-column input:checked').each(function(i, el){
-
-				var rate_id = jQuery(el).closest('tr.table_rate').find('.rate_id').val();
-
-				rate_ids.push( rate_id );
-
-				jQuery(el).closest('tr.table_rate').addClass('deleting');
-
-			});
-
-			var data = {
-				action: 'woocommerce_table_rate_delete',
-				rate_id: rate_ids,
-				security: '<?php echo wp_create_nonce("delete-rate"); ?>'
-			};
-
-			jQuery.post('<?php echo admin_url('admin-ajax.php'); ?>', data, function(response) {
-				jQuery('tr.deleting').fadeOut('300', function(){
-					jQuery(this).remove();
-				});
-			});
-		}
-		return false;
-	});
-
-	// Dupe row
-	jQuery('#shipping_rates').on( 'click', 'a.dupe', function() {
-		var answer = confirm("<?php _e('Duplicate the selected rates?', 'woocommerce-table-rate-shipping'); ?>")
-		if (answer) {
-			jQuery('#shipping_rates tbody.table_rates tr td.check-column input:checked').each(function(i, el){
-				var dupe = jQuery(el).closest('tr').clone();
-
-				dupe.find('.rate_id').val('0');
-
-				// Append
-				jQuery('#shipping_rates tbody.table_rates').append( dupe );
-			});
-
-			// Re-index keys
-			var loop = 0;
-			jQuery('tbody.table_rates .table_rate').each(function( index, row ){
-				jQuery('input, select', row).each(function( i, el ){
-
-					var t = jQuery(el);
-					t.attr('name', t.attr('name').replace(/\[([^[]*)\]/, "[" + loop + "]"));
-
-				});
-				loop++;
-			});
-		}
-		return false;
-	});
-
-	// Rate ordering
-	jQuery('#shipping_rates tbody.table_rates').sortable({
-		items:'tr',
-		cursor:'move',
-		axis:'y',
-		handle: 'td',
-		scrollSensitivity:40,
-		helper:function(e,ui){
-			ui.children().each(function(){
-				jQuery(this).width(jQuery(this).width());
-			});
-			ui.css('left', '0');
-			return ui;
-		},
-		start:function(event,ui){
-			ui.item.css('background-color','#f6f6f6');
-		},
-		stop:function(event,ui){
-			ui.item.removeAttr('style');
-			shipping_rates_row_indexes();
-		}
-	});
-
-	function shipping_rates_row_indexes() {
-		// Re-index keys
-		var loop = 0;
-		jQuery('#shipping_rates tr.table_rate').each(function( index, row ){
-			jQuery('input.text, input.checkbox, select.select', row).each(function( i, el ){
-
-				var t = jQuery(el);
-				t.attr('name', t.attr('name').replace(/\[([^[]*)\]/, "[" + loop + "]"));
-
-			});
-			loop++;
-		});
-	};
-	<?php
-	wc_enqueue_js( ob_get_clean() );
 }
 
 /**
@@ -278,7 +106,7 @@ function wc_table_rate_admin_shipping_rows( $table_rate_shipping ) {
 function wc_table_rate_admin_shipping_class_priorities( $shipping_method_id ) {
 	$classes = WC()->shipping->get_shipping_classes();
 	if (!$classes) :
-		echo '<p class="description">' . __('No shipping classes exist - you can ignore this option :)', 'woocommerce-table-rate-shipping') . '</p>';
+		echo '<p class="description">' . __( 'No shipping classes exist - you can ignore this option :)', 'woocommerce-table-rate-shipping' ) . '</p>';
 	else :
 		$priority = get_option( 'woocommerce_table_rate_default_priority_' . $shipping_method_id ) != '' ? get_option( 'woocommerce_table_rate_default_priority_' . $shipping_method_id ) : 10;
 		?>
@@ -301,13 +129,12 @@ function wc_table_rate_admin_shipping_class_priorities( $shipping_method_id ) {
 					<th><?php _e('Default', 'woocommerce-table-rate-shipping'); ?></th>
 					<td><input type="text" size="2" name="woocommerce_table_rate_default_priority" value="<?php echo $priority; ?>" /></td>
 				</tr>
-    			<?php
-    			$woocommerce_table_rate_priorities = get_option( 'woocommerce_table_rate_priorities_' . $shipping_method_id );
-        		foreach ($classes as $class) {
+				<?php
+				$woocommerce_table_rate_priorities = get_option( 'woocommerce_table_rate_priorities_' . $shipping_method_id );
+				foreach ($classes as $class) {
 					$priority = (isset($woocommerce_table_rate_priorities[$class->slug])) ? $woocommerce_table_rate_priorities[$class->slug] : 10;
 
 					echo '<tr><th>'.$class->name.'</th><td><input type="text" value="'.$priority.'" size="2" name="woocommerce_table_rate_priorities['.$class->slug.']" /></td></tr>';
-
 				}
 				?>
 			</tbody>
@@ -481,8 +308,6 @@ function wc_table_rate_admin_shipping_rows_process( $shipping_method_id ) {
 					'%s',
 				)
 			);
-
 		}
-
 	}
 }
