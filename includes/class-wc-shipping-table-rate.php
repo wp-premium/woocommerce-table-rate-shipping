@@ -699,7 +699,7 @@ class WC_Shipping_Table_Rate extends WC_Shipping_Method {
 
 					// Rate matched class
 					if ( $rate_match ) {
-
+						$rate_label = ! empty( $rate->rate_label ) ? $rate->rate_label : $this->title;
 						$class_cost = 0;
 						$class_cost += $rate->rate_cost;
 						$class_cost += $rate->rate_cost_per_item * $class->items_in_class;
@@ -750,7 +750,7 @@ class WC_Shipping_Table_Rate extends WC_Shipping_Method {
 			if ( $matched ) {
 				$rates[] = array(
 					'id'      => is_callable( array( $this, 'get_rate_id' ) ) ? $this->get_rate_id() : $this->instance_id,
-					'label'   => __( $this->title, 'woocommerce-table-rate-shipping' ),
+					'label'   => __( $rate_label, 'woocommerce-table-rate-shipping' ),
 					'cost'    => $total_cost,
 					'package' => $package,
 				);
