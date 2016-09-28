@@ -52,6 +52,16 @@
 					wc_table_rate_rows.reindexRows();
 				}
 			} );
+
+			$( document.body ).on( 'change', '#woocommerce_table_rate_calculation_type', function() {
+				if ( '' === $( this ).val() ) {
+					$( '#shipping_class_priorities' ).show();
+				} else {
+					$( '#shipping_class_priorities' ).hide();
+				}
+			});
+
+			$( '#woocommerce_table_rate_calculation_type' ).change();
 		},
 		onCalculationTypeChange: function() {
 			var selected = $( this ).val();
