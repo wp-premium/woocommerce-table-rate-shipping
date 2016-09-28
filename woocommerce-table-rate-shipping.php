@@ -1,15 +1,15 @@
 <?php
 /*
 Plugin Name: WooCommerce Table Rate Shipping
-Plugin URI: http://www.woothemes.com/products/table-rate-shipping/
+Plugin URI: https://woocommerce.com/products/table-rate-shipping/
 Description: Table rate shipping lets you define rates depending on location vs shipping class, price, weight, or item count.
-Version: 3.0.1
-Author: WooThemes
-Author URI: http://www.woothemes.com/
+Version: 3.0.2
+Author: Automattic
+Author URI: https://woocommerce.com/
 Requires at least: 4.0
-Tested up to: 4.5
+Tested up to: 4.6
 
-	Copyright: 2016 WooThemes.
+	Copyright: 2016 Automattic.
 	License: GNU General Public License v3.0
 	License URI: http://www.gnu.org/licenses/gpl-3.0.html
 */
@@ -42,7 +42,7 @@ if ( is_woocommerce_active() ) {
 		 * Constructor
 		 */
 		public function __construct() {
-			define( 'TABLE_RATE_SHIPPING_VERSION', '3.0.1' );
+			define( 'TABLE_RATE_SHIPPING_VERSION', '3.0.2' );
 			define( 'TABLE_RATE_SHIPPING_DEBUG', defined( 'WP_DEBUG' ) && 'true' == WP_DEBUG && ( ! defined( 'WP_DEBUG_DISPLAY' ) || 'true' == WP_DEBUG_DISPLAY ) );
 			add_action( 'plugins_loaded', array( $this, 'init' ) );
 			register_activation_hook( __FILE__, array( $this, 'install' ) );
@@ -140,8 +140,10 @@ if ( is_woocommerce_active() ) {
 		 * Admin styles + scripts
 		 */
 		public function admin_enqueue_scripts() {
+			$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+
 			wp_enqueue_style( 'woocommerce_shipping_table_rate_styles', plugins_url( '/assets/css/admin.css', __FILE__ ) );
-			wp_register_script( 'woocommerce_shipping_table_rate_rows', plugins_url( '/assets/js/table-rate-rows.min.js', __FILE__ ), array( 'jquery', 'wp-util' ) );
+			wp_register_script( 'woocommerce_shipping_table_rate_rows', plugins_url( '/assets/js/table-rate-rows' . $suffix . '.js', __FILE__ ), array( 'jquery', 'wp-util' ) );
 			wp_localize_script( 'woocommerce_shipping_table_rate_rows', 'woocommerce_shipping_table_rate_rows', array(
 				'i18n' => array(
 					'order'        => __( 'Order', 'woocommerce-table-rate-shipping' ),
