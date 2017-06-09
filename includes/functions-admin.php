@@ -174,18 +174,18 @@ function wc_table_rate_admin_shipping_rows_process( $shipping_method_id ) {
 
 	// Save rates
 	$rate_ids			 		= isset( $_POST['rate_id'] ) ? array_map( 'intval', $_POST['rate_id'] ) : array();
-	$shipping_class 			= isset( $_POST['shipping_class'] ) ? array_map( 'woocommerce_clean', $_POST['shipping_class'] ) : array();
-	$shipping_condition 		= isset( $_POST['shipping_condition'] ) ? array_map( 'woocommerce_clean', $_POST['shipping_condition'] ) : array();
-	$shipping_min 				= isset( $_POST['shipping_min'] ) ? array_map( 'woocommerce_clean', $_POST['shipping_min'] ) : array();
-	$shipping_max 				= isset( $_POST['shipping_max'] ) ? array_map( 'woocommerce_clean', $_POST['shipping_max'] ) : array();
-	$shipping_cost 				= isset( $_POST['shipping_cost'] ) ? array_map( 'woocommerce_clean', $_POST['shipping_cost'] ) : array();
-	$shipping_per_item 			= isset( $_POST['shipping_per_item'] ) ? array_map( 'woocommerce_clean', $_POST['shipping_per_item'] ) : array();
-	$shipping_cost_per_weight	= isset( $_POST['shipping_cost_per_weight'] ) ? array_map( 'woocommerce_clean', $_POST['shipping_cost_per_weight'] ) : array();
-	$cost_percent				= isset( $_POST['shipping_cost_percent'] ) ? array_map( 'woocommerce_clean', $_POST['shipping_cost_percent'] ) : array();
-	$shipping_label 			= isset( $_POST['shipping_label'] ) ? array_map( 'woocommerce_clean', $_POST['shipping_label'] ) : array();
-	$shipping_priority 			= isset( $_POST['shipping_priority'] ) ? array_map( 'woocommerce_clean', $_POST['shipping_priority'] ) : array();
-	$shipping_abort      		= isset( $_POST['shipping_abort'] ) ? array_map( 'woocommerce_clean', $_POST['shipping_abort'] ) : array();
-	$shipping_abort_reason 		= isset( $_POST['shipping_abort_reason'] ) ? array_map( 'woocommerce_clean', $_POST['shipping_abort_reason'] ) : array();
+	$shipping_class 			= isset( $_POST['shipping_class'] ) ? array_map( 'wc_clean', $_POST['shipping_class'] ) : array();
+	$shipping_condition 		= isset( $_POST['shipping_condition'] ) ? array_map( 'wc_clean', $_POST['shipping_condition'] ) : array();
+	$shipping_min 				= isset( $_POST['shipping_min'] ) ? array_map( 'wc_clean', $_POST['shipping_min'] ) : array();
+	$shipping_max 				= isset( $_POST['shipping_max'] ) ? array_map( 'wc_clean', $_POST['shipping_max'] ) : array();
+	$shipping_cost 				= isset( $_POST['shipping_cost'] ) ? array_map( 'wc_clean', $_POST['shipping_cost'] ) : array();
+	$shipping_per_item 			= isset( $_POST['shipping_per_item'] ) ? array_map( 'wc_clean', $_POST['shipping_per_item'] ) : array();
+	$shipping_cost_per_weight	= isset( $_POST['shipping_cost_per_weight'] ) ? array_map( 'wc_clean', $_POST['shipping_cost_per_weight'] ) : array();
+	$cost_percent				= isset( $_POST['shipping_cost_percent'] ) ? array_map( 'wc_clean', $_POST['shipping_cost_percent'] ) : array();
+	$shipping_label 			= isset( $_POST['shipping_label'] ) ? array_map( 'wc_clean', $_POST['shipping_label'] ) : array();
+	$shipping_priority 			= isset( $_POST['shipping_priority'] ) ? array_map( 'wc_clean', $_POST['shipping_priority'] ) : array();
+	$shipping_abort      		= isset( $_POST['shipping_abort'] ) ? array_map( 'wc_clean', $_POST['shipping_abort'] ) : array();
+	$shipping_abort_reason 		= isset( $_POST['shipping_abort_reason'] ) ? array_map( 'wc_clean', $_POST['shipping_abort_reason'] ) : array();
 
 	// Get max key
 	$max_key = ( $rate_ids ) ? max( array_keys( $rate_ids ) ) : 0;
