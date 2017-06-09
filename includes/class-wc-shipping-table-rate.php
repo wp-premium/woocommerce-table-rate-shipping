@@ -807,7 +807,7 @@ class WC_Shipping_Table_Rate extends WC_Shipping_Method {
 
 				$cost = $rate->rate_cost;
 				$cost += $rate->rate_cost_per_item * $count;
-				$cost += $this->get_fee( $this->fee, $price );
+				$cost += (float) $this->get_fee( $this->fee, $price );
 				$cost += $rate->rate_cost_per_weight_unit * $weight;
 				$cost += ( $rate->rate_cost_percent / 100 ) * $price;
 
@@ -894,7 +894,7 @@ class WC_Shipping_Table_Rate extends WC_Shipping_Method {
 
 		if ( get_option('woocommerce_prices_include_tax') == 'yes' ) {
 
-			$base_tax_rates = $this->tax->get_shop_base_rate( $_product->tax_class );
+			$base_tax_rates = $this->tax->get_shop_base_rate( $_product->get_tax_class() );
 			$tax_rates      = $this->tax->get_rates( $_product->get_tax_class() );
 
 			if ( $tax_rates !== $base_tax_rates ) {
