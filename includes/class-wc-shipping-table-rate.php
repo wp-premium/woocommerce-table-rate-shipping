@@ -473,20 +473,20 @@ class WC_Shipping_Table_Rate extends WC_Shipping_Method {
 
 					$matching_rates = $this->query_rates( array(
 						'price'             => $this->get_product_price( $_product ),
-						'weight'            => $_product->get_weight(),
+						'weight'            => (float) $_product->get_weight(),
 						'count'             => 1,
 						'count_in_class'    => $this->count_items_in_class( $package, $_product->get_shipping_class_id() ),
 						'shipping_class_id' => $_product->get_shipping_class_id()
 					) );
 
-					$item_weight = round( $_product->get_weight(), 2 );
-					$item_fee    = $this->get_fee( $this->fee, $this->get_product_price( $_product ) );
+					$item_weight = round( (float) $_product->get_weight(), 2 );
+					$item_fee    = (float) $this->get_fee( $this->fee, $this->get_product_price( $_product ) );
 					$item_cost   = 0;
 
 					foreach ( $matching_rates as $rate ) {
-						$item_cost += $rate->rate_cost;
-						$item_cost += $rate->rate_cost_per_weight_unit * $item_weight;
-						$item_cost += ( $rate->rate_cost_percent / 100 ) * $this->get_product_price( $_product );
+						$item_cost += (float) $rate->rate_cost;
+						$item_cost += (float) $rate->rate_cost_per_weight_unit * $item_weight;
+						$item_cost += ( (float) $rate->rate_cost_percent / 100 ) * $this->get_product_price( $_product );
 						$matched = true;
 						if ( $rate->rate_abort ) {
 							if ( ! empty( $rate->rate_abort_reason ) ) {
@@ -551,21 +551,21 @@ class WC_Shipping_Table_Rate extends WC_Shipping_Method {
 
 					$matching_rates = $this->query_rates( array(
 						'price'             => $this->get_product_price( $_product, $values['quantity'] ),
-						'weight'            => $_product->get_weight() * $values['quantity'],
+						'weight'            => (float) $_product->get_weight() * $values['quantity'],
 						'count'             => $values['quantity'],
 						'count_in_class'    => $this->count_items_in_class( $package, $_product->get_shipping_class_id() ),
 						'shipping_class_id' => $_product->get_shipping_class_id()
 					) );
 
-					$item_weight = round( $_product->get_weight() * $values['quantity'], 2 );
-					$item_fee    = $this->get_fee( $this->fee, $this->get_product_price( $_product, $values['quantity'] ) );
+					$item_weight = round( (float) $_product->get_weight() * $values['quantity'], 2 );
+					$item_fee    = (float) $this->get_fee( $this->fee, $this->get_product_price( $_product, $values['quantity'] ) );
 					$item_cost   = 0;
 
 					foreach ( $matching_rates as $rate ) {
-						$item_cost += $rate->rate_cost;
-						$item_cost += $rate->rate_cost_per_item * $values['quantity'];
-						$item_cost += $rate->rate_cost_per_weight_unit * $item_weight;
-						$item_cost += ( $rate->rate_cost_percent / 100 ) * ( $this->get_product_price( $_product, $values['quantity'] ) );
+						$item_cost += (float) $rate->rate_cost;
+						$item_cost += (float) $rate->rate_cost_per_item * $values['quantity'];
+						$item_cost += (float) $rate->rate_cost_per_weight_unit * $item_weight;
+						$item_cost += ( (float) $rate->rate_cost_percent / 100 ) * ( $this->get_product_price( $_product, $values['quantity'] ) );
 						$matched = true;
 
 						if ( $rate->rate_abort ) {
@@ -645,7 +645,7 @@ class WC_Shipping_Table_Rate extends WC_Shipping_Method {
 					}
 
 					$classes[ $shipping_class ]->price          += $this->get_product_price( $_product, $values['quantity'] );
-					$classes[ $shipping_class ]->weight         += $_product->get_weight() * $values['quantity'];
+					$classes[ $shipping_class ]->weight         += (float) $_product->get_weight() * $values['quantity'];
 					$classes[ $shipping_class ]->items          += $values['quantity'];
 					$classes[ $shipping_class ]->items_in_class += $values['quantity'];
 				}
@@ -701,10 +701,10 @@ class WC_Shipping_Table_Rate extends WC_Shipping_Method {
 					if ( $rate_match ) {
 						$rate_label = ! empty( $rate->rate_label ) ? $rate->rate_label : $this->title;
 						$class_cost = 0;
-						$class_cost += $rate->rate_cost;
-						$class_cost += $rate->rate_cost_per_item * $class->items_in_class;
-						$class_cost += $rate->rate_cost_per_weight_unit * $class->weight;
-						$class_cost += ( $rate->rate_cost_percent / 100 ) * $class->price;
+						$class_cost += (float) $rate->rate_cost;
+						$class_cost += (float) $rate->rate_cost_per_item * $class->items_in_class;
+						$class_cost += (float) $rate->rate_cost_per_weight_unit * $class->weight;
+						$class_cost += ( (float) $rate->rate_cost_percent / 100 ) * $class->price;
 
 						if ( $rate->rate_abort ) {
 							if ( ! empty( $rate->rate_abort_reason ) ) {
@@ -719,7 +719,7 @@ class WC_Shipping_Table_Rate extends WC_Shipping_Method {
 
 						$matched = true;
 
-						$class_fee	= $this->get_fee( $this->fee, $class->price );
+						$class_fee	= (float) $this->get_fee( $this->fee, $class->price );
 						$class_cost += $class_fee;
 
 						if ( $this->min_cost && $class_cost < $this->min_cost ) {
@@ -770,9 +770,8 @@ class WC_Shipping_Table_Rate extends WC_Shipping_Method {
 				$_product = $values['data'];
 
 				if ( $values['quantity'] > 0 && $_product->needs_shipping() ) {
-
 					$price  += ! empty( $values['line_total'] ) ? $values['line_total'] : $this->get_product_price( $_product, $values['quantity'] );
-					$weight += ( $_product->get_weight() * $values['quantity'] );
+					$weight += (float) $_product->get_weight() * (float) $values['quantity'];
 					$count  += $values['quantity'];
 
 					if ( $_product->get_shipping_class_id() == $shipping_class )
@@ -805,11 +804,11 @@ class WC_Shipping_Table_Rate extends WC_Shipping_Method {
 				if ( $rate->rate_priority )
 					$rates = array();
 
-				$cost = $rate->rate_cost;
-				$cost += $rate->rate_cost_per_item * $count;
+				$cost = (float) $rate->rate_cost;
+				$cost += (float) $rate->rate_cost_per_item * $count;
 				$cost += (float) $this->get_fee( $this->fee, $price );
-				$cost += $rate->rate_cost_per_weight_unit * $weight;
-				$cost += ( $rate->rate_cost_percent / 100 ) * $price;
+				$cost += (float) $rate->rate_cost_per_weight_unit * $weight;
+				$cost += ( (float) $rate->rate_cost_percent / 100 ) * $price;
 
 				if ( $this->order_handling_fee ) {
 					$cost += $this->order_handling_fee;
