@@ -1,5 +1,8 @@
 *** Table Rate Shipping Changelog ***
 
+2017-06-20 - version 3.0.4
+* Fix - Additional PHP7.1 notice fixes.
+
 2017-04-27 - version 3.0.3
 * Fix - Additional WC 3.0 compatibility.
 * Fix - PHP 7.1 notices.
