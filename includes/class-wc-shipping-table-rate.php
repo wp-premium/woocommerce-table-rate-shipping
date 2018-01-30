@@ -11,6 +11,13 @@ class WC_Shipping_Table_Rate extends WC_Shipping_Method {
 	var $available_rates; // Available table rates titles and costs
 	var $id;              // Method ID - should be unique to the shipping method
 	var $instance_id;     // Instance ID number
+	var $decimal_options = array(
+		'order_handling_fee',
+		'max_shipping_cost',
+		'handling_fee',
+		'min_cost',
+		'max_cost',
+	);
 
 	/**
 	 * Constructor
@@ -94,6 +101,13 @@ class WC_Shipping_Table_Rate extends WC_Shipping_Method {
 			$this->instance_settings[ $key ] = $empty_value;
 		}
 
+		// For the admin view, make sure we display them with decimal separator.
+		// Otherwise, use dots for calculation.
+		if ( is_admin() && in_array( $key, $this->decimal_options ) ) {
+			$decimal_separator = wc_get_price_decimal_separator();
+			$this->instance_settings[ $key ] = str_replace( '.', $decimal_separator, $this->instance_settings[ $key ] );
+		}
+
 		return $this->instance_settings[ $key ];
 	}
 
@@ -158,14 +172,14 @@ class WC_Shipping_Table_Rate extends WC_Shipping_Method {
 			'order_handling_fee' => array(
 				'title'       => __( 'Handling Fee', 'woocommerce-table-rate-shipping' ),
 				'type'        => 'text',
-				'desc_tip'    => __( 'Enter an amount, e.g. 2.50, or leave blank to disable. This cost is applied once for the order as a whole.', 'woocommerce-table-rate-shipping '),
+				'desc_tip'    => __( 'Enter an amount, e.g. 2.50, or a percentage, e.g. 5%. Leave blank to disable. This cost is applied once for the order as a whole.', 'woocommerce-table-rate-shipping' ),
 				'default'     => '',
 				'placeholder' => __( 'n/a', 'woocommerce-table-rate-shipping' )
 			),
 			'max_shipping_cost' => array(
 				'title'       => __( 'Maximum Shipping Cost', 'woocommerce-table-rate-shipping' ),
 				'type'        => 'text',
-				'desc_tip'    => __( 'Maximum cost that the customer will pay after all the shipping rules have been applied. If the shipping cost calculated is bigger than this value, this cost will be the one shown.', 'woocommerce-table-rate-shipping '),
+				'desc_tip'    => __( 'Maximum cost that the customer will pay after all the shipping rules have been applied. If the shipping cost calculated is bigger than this value, this cost will be the one shown.', 'woocommerce-table-rate-shipping' ),
 				'default'     => '',
 				'placeholder' => __( 'n/a', 'woocommerce-table-rate-shipping' )
 			),
@@ -191,7 +205,7 @@ class WC_Shipping_Table_Rate extends WC_Shipping_Method {
 			'handling_fee' => array(
 				'title'       => __( 'Handling Fee Per [item]', 'woocommerce-table-rate-shipping' ),
 				'type'        => 'text',
-				'desc_tip'    => __( 'Handling fee excluding tax. Enter an amount, e.g. 2.50, or a percentage, e.g. 5%. Leave blank to disable. Applied based on the "Calculation Type" chosen below.', 'woocommerce-table-rate-shipping '),
+				'desc_tip'    => __( 'Handling fee excluding tax. Enter an amount, e.g. 2.50, or a percentage, e.g. 5%. Leave blank to disable. Applied based on the "Calculation Type" chosen below.', 'woocommerce-table-rate-shipping' ),
 				'default'     => '',
 				'placeholder' => __( 'n/a', 'woocommerce-table-rate-shipping' )
 			),
@@ -263,6 +277,19 @@ class WC_Shipping_Table_Rate extends WC_Shipping_Method {
 	 * Process admin options.
 	 */
 	public function process_admin_options() {
+		$decimal_separator = wc_get_price_decimal_separator();
+
+		// Make sure decimals are with dot so that they add properly in PHP.
+		foreach ( $this->decimal_options as $option ) {
+			$option = 'woocommerce_table_rate_' . $option;
+
+			if ( ! isset( $_POST[ $option ] ) ) {
+				continue;
+			}
+
+			$_POST[ $option ] = str_replace( $decimal_separator, '.', $_POST[ $option ] );
+		}
+
 		parent::process_admin_options();
 		wc_table_rate_admin_shipping_rows_process( $this->instance_id );
 	}
@@ -740,7 +767,7 @@ class WC_Shipping_Table_Rate extends WC_Shipping_Method {
 			}
 
 			if ( $this->order_handling_fee ) {
-				$total_cost += $this->order_handling_fee;
+				$total_cost += $this->get_fee( $this->order_handling_fee, $total_cost );
 			}
 
 			if ( $this->max_shipping_cost &&  $total_cost > $this->max_shipping_cost ) {
@@ -864,18 +891,50 @@ class WC_Shipping_Table_Rate extends WC_Shipping_Method {
 	}
 
 	/**
-	 * get_shipping_rates function.
-	 * @param int $class (default: 0)
-	 * @return array
+	 * Get raw shipping rates from the DB.
+	 *
+	 * @param string $output Output format.
+	 * @return mixed
 	 */
-	public function get_shipping_rates( ) {
+	public function get_shipping_rates( $output = OBJECT ) {
 		global $wpdb;
 
 		return $wpdb->get_results( "
 			SELECT * FROM {$this->rates_table}
 			WHERE shipping_method_id = {$this->instance_id}
 			ORDER BY rate_order ASC;
-		" );
+		", $output );
+	}
+
+	/**
+	 * Get shipping rates with normalized values (respect decimal separator
+	 * settings), for display.
+	 *
+	 * @return array
+	 */
+	public function get_normalized_shipping_rates() {
+		$shipping_rates = $this->get_shipping_rates( ARRAY_A );
+		$decimal_separator = wc_get_price_decimal_separator();
+		$normalize_keys = array(
+			'rate_cost',
+			'rate_cost_per_item',
+			'rate_cost_per_weight_unit',
+			'rate_cost_percent',
+			'rate_max',
+			'rate_min',
+		);
+
+		foreach ( $shipping_rates as $index => $shipping_rate ) {
+			foreach ( $normalize_keys as $key ) {
+				if ( ! isset( $shipping_rate[ $key ] ) ) {
+					continue;
+				}
+
+				$shipping_rates[ $index ][ $key ] = str_replace( '.', $decimal_separator, $shipping_rates[ $index ][ $key ] );
+			}
+		}
+
+		return $shipping_rates;
 	}
 
 	/**

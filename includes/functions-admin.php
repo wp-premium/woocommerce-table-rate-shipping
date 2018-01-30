@@ -39,7 +39,7 @@ function wc_table_rate_admin_shipping_rows( $instance ) {
 				<th colspan="9"><span class="description"><?php _e('Define your table rates here in order of priority.', 'woocommerce-table-rate-shipping'); ?></span> <a href="#" class="dupe button"><?php _e('Duplicate selected rows', 'woocommerce-table-rate-shipping'); ?></a> <a href="#" class="remove button"><?php _e('Delete selected rows', 'woocommerce-table-rate-shipping'); ?></a></th>
 			</tr>
 		</tfoot>
-		<tbody class="table_rates" data-rates="<?php echo esc_attr( wp_json_encode( $instance->get_shipping_rates() ) ); ?>"></tbody>
+		<tbody class="table_rates" data-rates="<?php echo esc_attr( wp_json_encode( $instance->get_normalized_shipping_rates() ) ); ?>"></tbody>
 	</table>
 	<script type="text/template" id="tmpl-table-rate-shipping-row-template">
 		<tr class="table_rate">
@@ -194,19 +194,40 @@ function wc_table_rate_admin_shipping_rows_process( $shipping_method_id ) {
 
 		if ( ! isset( $rate_ids[ $i ] ) ) continue;
 
+		$decimal_separator         = wc_get_price_decimal_separator();
 		$rate_id                   = $rate_ids[ $i ];
+
+		if ( isset( $shipping_cost[ $i ] ) ) {
+			$shipping_cost[ $i ] = str_replace( $decimal_separator, '.', $shipping_cost[ $i ] );
+		}
+
+		if ( isset( $shipping_per_item[ $i ] ) ) {
+			$shipping_per_item[ $i ] = str_replace( $decimal_separator, '.', $shipping_per_item[ $i ] );
+		}
+
+		if ( isset( $shipping_per_weight[ $i ] ) ) {
+			$shipping_per_weight[ $i ] = str_replace( $decimal_separator, '.', $shipping_per_weight[ $i ] );
+		}
+
+		if ( isset( $cost_percent[ $i ] ) ) {
+			$cost_percent[ $i ] = str_replace( $decimal_separator, '.', $cost_percent[ $i ] );
+		}
+
 		$rate_class                = isset( $shipping_class[ $i ] ) ? $shipping_class[ $i ] : '';
 		$rate_condition            = $shipping_condition[ $i ];
 		$rate_min                  = isset( $shipping_min[ $i ] ) ? $shipping_min[ $i ] : '';
 		$rate_max                  = isset( $shipping_max[ $i ] ) ? $shipping_max[ $i ] : '';
-		$rate_cost                 = isset( $shipping_cost[ $i ] ) ? rtrim( rtrim( number_format( (double) $shipping_cost[ $i ], 4, '.', '' ), '0' ), '.' ) : '';;
-		$rate_cost_per_item        = isset( $shipping_per_item[ $i ] ) ? rtrim( rtrim( number_format( (double) $shipping_per_item[ $i ], 4, '.', '' ), '0' ), '.' ) : '';;
-		$rate_cost_per_weight_unit = isset( $shipping_cost_per_weight[ $i ] ) ? rtrim( rtrim( number_format( (double) $shipping_cost_per_weight[ $i ], 4, '.', '' ), '0' ), '.' ) : '';;
-		$rate_cost_percent         = isset( $cost_percent[ $i ] ) ? rtrim( rtrim( number_format( (double) str_replace( '%', '', $cost_percent[ $i ] ), 2, '.', '' ), '0' ), '.' ) : '';;
-		$rate_label                = isset( $shipping_label[ $i ] ) ? $shipping_label[ $i ] : '';;
+		$rate_cost                 = isset( $shipping_cost[ $i ] ) ? rtrim( rtrim( number_format( (double) $shipping_cost[ $i ], 4, '.', '' ), '0' ), '.' ) : '';
+		$rate_cost_per_item        = isset( $shipping_per_item[ $i ] ) ? rtrim( rtrim( number_format( (double) $shipping_per_item[ $i ], 4, '.', '' ), '0' ), '.' ) : '';
+		$rate_cost_per_weight_unit = isset( $shipping_cost_per_weight[ $i ] ) ? rtrim( rtrim( number_format( (double) $shipping_cost_per_weight[ $i ], 4, '.', '' ), '0' ), '.' ) : '';
+		$rate_cost_percent         = isset( $cost_percent[ $i ] ) ? rtrim( rtrim( number_format( (double) str_replace( '%', '', $cost_percent[ $i ] ), 2, '.', '' ), '0' ), '.' ) : '';
+		$rate_label                = isset( $shipping_label[ $i ] ) ? $shipping_label[ $i ] : '';
 		$rate_priority             = isset( $shipping_priority[ $i ] ) ? 1 : 0;
 		$rate_abort                = isset( $shipping_abort[ $i ] ) ? 1 : 0;
 		$rate_abort_reason         = isset( $shipping_abort_reason[ $i ] ) ? $shipping_abort_reason[ $i ] : '';
+
+		$rate_min = str_replace( $decimal_separator, '.', $rate_min );
+		$rate_max = str_replace( $decimal_separator, '.', $rate_max );
 
 		// Format min and max
 		switch ( $rate_condition ) {
