@@ -3,7 +3,7 @@
  * Plugin Name: WooCommerce Table Rate Shipping
  * Plugin URI: https://woocommerce.com/products/table-rate-shipping/
  * Description: Table rate shipping lets you define rates depending on location vs shipping class, price, weight, or item count.
- * Version: 3.0.7
+ * Version: 3.0.9
  * Author: WooCommerce
  * Author URI: https://woocommerce.com/
  * Requires at least: 4.0
@@ -12,7 +12,7 @@
  * License: GNU General Public License v3.0
  * License URI: http://www.gnu.org/licenses/gpl-3.0.html
  * Domain Path: /languages/
- * WC tested up to: 3.3
+ * WC tested up to: 3.4
  * WC requires at least: 2.6
  *
  * Woo: 18718:3034ed8aff427b0f635fe4c86bbf008a
@@ -46,10 +46,36 @@ if ( is_woocommerce_active() ) {
 		 * Constructor
 		 */
 		public function __construct() {
-			define( 'TABLE_RATE_SHIPPING_VERSION', '3.0.7' );
+			define( 'TABLE_RATE_SHIPPING_VERSION', '3.0.9' );
 			define( 'TABLE_RATE_SHIPPING_DEBUG', defined( 'WP_DEBUG' ) && 'true' == WP_DEBUG && ( ! defined( 'WP_DEBUG_DISPLAY' ) || 'true' == WP_DEBUG_DISPLAY ) );
+			define( 'WC_TABLE_RATE_SHIPPING_MAIN_FILE', __FILE__ );
+
+			add_filter( 'pre_site_transient_update_plugins', array( $this, 'filter_out_trs' ) );
+			add_filter( 'site_transient_update_plugins', array( $this, 'filter_out_trs' ) );
 			add_action( 'plugins_loaded', array( $this, 'init' ) );
 			register_activation_hook( __FILE__, array( $this, 'install' ) );
+		}
+
+		/**
+		 * We need to filter out woocommerce-table-rate-shipping from .org since that's a different
+		 * plugin and users should not be redirected there.
+		 *
+		 * Note that in case this plugin is not activated, users will still be taken to the wrong .org
+		 * site if they click on "View Details".
+		 *
+		 * See https://github.com/woocommerce/woocommerce-table-rate-shipping/issues/70 for more information.
+		 *
+		 * @param array $value List of plugins information
+		 * @return array
+	 	 */
+		public function filter_out_trs( $value ) {
+			$plugin_base = plugin_basename( WC_TABLE_RATE_SHIPPING_MAIN_FILE );
+
+			if ( isset( $value->no_update[ $plugin_base ] ) ) {
+				unset( $value->no_update[ $plugin_base ] );
+			}
+
+			return $value;
 		}
 
 		/**
@@ -166,6 +192,7 @@ if ( is_woocommerce_active() ) {
 		 */
 		public function shipping_init() {
 			include_once( 'includes/class-wc-shipping-table-rate.php' );
+			include_once( 'includes/class-wc-shipping-table-rate-privacy.php' );
 		}
 
 		/**

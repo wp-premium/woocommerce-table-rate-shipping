@@ -209,6 +209,10 @@ function wc_table_rate_admin_shipping_rows_process( $shipping_method_id ) {
 			$shipping_per_weight[ $i ] = str_replace( $decimal_separator, '.', $shipping_per_weight[ $i ] );
 		}
 
+		if ( isset( $shipping_cost_per_weight[ $i ] ) ) {
+			$shipping_cost_per_weight[ $i ] = str_replace( $decimal_separator, '.', $shipping_cost_per_weight[ $i ] );
+		}
+
 		if ( isset( $cost_percent[ $i ] ) ) {
 			$cost_percent[ $i ] = str_replace( $decimal_separator, '.', $cost_percent[ $i ] );
 		}
