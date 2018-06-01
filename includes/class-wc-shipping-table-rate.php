@@ -26,7 +26,7 @@ class WC_Shipping_Table_Rate extends WC_Shipping_Method {
 		global $wpdb;
 
 		$this->id                 = 'table_rate';
-		$this->instance_id        = $instance_id;
+		$this->instance_id        = absint( $instance_id );
 		$this->method_title       = __( 'Table rates', 'woocommerce-table-rate-shipping' );
 		$this->method_description = __( 'Table rates are dynamic rates based on a number of cart conditions.', 'woocommerce-table-rate-shipping' );
 		$this->title              = $this->method_title;

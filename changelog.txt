@@ -1,5 +1,14 @@
 *** Table Rate Shipping Changelog ***
 
+2018-05-30 - version 3.0.9
+* Fix    - Saving settings not working in WooCommerce 3.4.1
+
+2018-05-23 - version 3.0.8
+* Update - Privacy policy notification.
+* Update - WC 3.4 compatibility.
+* Fix    - Use correct plugin URL on plugins listview.
+* Fix    - Weight cost doesn't support different decimal separators.
+
 2018-01-26 - version 3.0.7
 * Add - Percentage support for Order total Handling Fee.
 * Fix - Additional fixes for supporting decimal separator as comma.
