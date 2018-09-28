@@ -1,5 +1,8 @@
 *** Table Rate Shipping Changelog ***
 
+2018-09-25 - version 3.0.10
+* Update - WC 3.5 compatibility.
+
 2018-05-30 - version 3.0.9
 * Fix    - Saving settings not working in WooCommerce 3.4.1
 
