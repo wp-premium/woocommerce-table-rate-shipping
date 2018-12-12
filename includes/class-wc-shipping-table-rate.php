@@ -32,7 +32,6 @@ class WC_Shipping_Table_Rate extends WC_Shipping_Method {
 		$this->title              = $this->method_title;
 		$this->has_settings       = false;
 		$this->supports           = array( 'zones', 'shipping-zones', 'instance-settings' );
-		$this->tax                = new WC_Tax();
 
 		// Load the form fields.
 		$this->init_form_fields();
@@ -166,8 +165,20 @@ class WC_Shipping_Table_Rate extends WC_Shipping_Method {
 				'default'     => 'taxable',
 				'options'     => array(
 					'taxable' => __('Taxable', 'woocommerce-table-rate-shipping'),
-					'none'    => __('None', 'woocommerce-table-rate-shipping')
+					'none'    => __('None', 'woocommerce-table-rate-shipping'),
 				)
+			),
+			'prices_include_tax' => array(
+				'title'       => __( 'Tax included in shipping costs', 'woocommerce-table-rate-shipping' ),
+				'type'        => 'select',
+				'description' => '',
+				'desc_tip'    => true,
+				'default'     => get_option( $this->get_instance_option_key() ) ? 'no' // Shipping method has previously been configured so we default to 'no' to maintain backwards compatibility.
+					: ( 'yes' === get_option( 'woocommerce_prices_include_tax' ) ? 'yes' : 'no' ), // Otherwise default to the store setting.
+				'options'     => array(
+					'yes' => __( 'Yes, I will enter costs below inclusive of tax', 'woocommerce-table-rate-shipping' ),
+					'no'  => __( 'No, I will enter costs below exclusive of tax', 'woocommerce-table-rate-shipping' ),
+				),
 			),
 			'order_handling_fee' => array(
 				'title'       => __( 'Handling Fee', 'woocommerce-table-rate-shipping' ),
@@ -205,7 +216,7 @@ class WC_Shipping_Table_Rate extends WC_Shipping_Method {
 			'handling_fee' => array(
 				'title'       => __( 'Handling Fee Per [item]', 'woocommerce-table-rate-shipping' ),
 				'type'        => 'text',
-				'desc_tip'    => __( 'Handling fee excluding tax. Enter an amount, e.g. 2.50, or a percentage, e.g. 5%. Leave blank to disable. Applied based on the "Calculation Type" chosen below.', 'woocommerce-table-rate-shipping' ),
+				'desc_tip'    => __( 'Handling fee. Enter an amount, e.g. 2.50, or a percentage, e.g. 5%. Leave blank to disable. Applied based on the "Calculation Type" chosen below.', 'woocommerce-table-rate-shipping' ),
 				'default'     => '',
 				'placeholder' => __( 'n/a', 'woocommerce-table-rate-shipping' )
 			),
@@ -474,7 +485,7 @@ class WC_Shipping_Table_Rate extends WC_Shipping_Method {
 
 	/**
 	 * get_rates function.
-	 * @return array
+	 * @return bool
 	 */
 	public function get_rates( $package ) {
 		global $wpdb;
@@ -516,7 +527,7 @@ class WC_Shipping_Table_Rate extends WC_Shipping_Method {
 						$item_cost += ( (float) $rate->rate_cost_percent / 100 ) * $this->get_product_price( $_product );
 						$matched = true;
 						if ( $rate->rate_abort ) {
-							if ( ! empty( $rate->rate_abort_reason ) ) {
+							if ( ! empty( $rate->rate_abort_reason ) && ! wc_has_notice( $rate->rate_abort_reason, 'notice' ) ) {
 								wc_add_notice( $rate->rate_abort_reason, 'notice' );
 							}
 							return;
@@ -797,7 +808,7 @@ class WC_Shipping_Table_Rate extends WC_Shipping_Method {
 				$_product = $values['data'];
 
 				if ( $values['quantity'] > 0 && $_product->needs_shipping() ) {
-					$price  += ! empty( $values['line_total'] ) ? $values['line_total'] : $this->get_product_price( $_product, $values['quantity'] );
+					$price  += $this->get_product_price( $_product, $values['quantity'] );
 					$weight += (float) $_product->get_weight() * (float) $values['quantity'];
 					$count  += $values['quantity'];
 
@@ -865,6 +876,27 @@ class WC_Shipping_Table_Rate extends WC_Shipping_Method {
 				}
 			}
 
+		}
+
+		if ( 'yes' === $this->get_instance_option( 'prices_include_tax' ) && $this->is_taxable() ) {
+			// We allow the table rate to be entered inclusive of taxes just like product prices.
+			foreach ( $rates as $key => $rate ) {
+
+				$tax_rates = WC_Tax::get_shipping_tax_rates();
+				$base_tax_rates = WC_Tax::get_shipping_tax_rates( '', false );
+
+				if ( apply_filters( 'woocommerce_adjust_non_base_location_prices', true ) ) {
+					$taxes = WC_Tax::calc_tax( $rate['cost'], $base_tax_rates, true );
+				} else {
+					$taxes = WC_Tax::calc_tax( $rate['cost'], $tax_rates, true );
+				}
+
+				$rates[$key]['cost'] = $rate['cost'] - array_sum( $taxes );
+
+				$rates[$key]['taxes'] = WC_Tax::calc_shipping_tax( $rates[$key]['cost'], $tax_rates );
+
+				$rates[$key]['price_decimals'] = '4'; // Prevent the cost from being rounded before the tax is added.
+			}
 		}
 
 		// None found?
@@ -947,17 +979,15 @@ class WC_Shipping_Table_Rate extends WC_Shipping_Method {
 		$row_base_price = $_product->get_price() * $qty;
 		$row_base_price = apply_filters( 'woocommerce_table_rate_package_row_base_price', $row_base_price, $_product, $qty );
 
-		if ( ! $_product->is_taxable() )
-			return $row_base_price;
+		if ( $_product->is_taxable() && wc_prices_include_tax() ) {
 
-		if ( get_option('woocommerce_prices_include_tax') == 'yes' ) {
+			$base_tax_rates = WC_Tax::get_base_tax_rates( $_product->get_tax_class() );
 
-			$base_tax_rates = $this->tax->get_shop_base_rate( $_product->get_tax_class() );
-			$tax_rates      = $this->tax->get_rates( $_product->get_tax_class() );
+			$tax_rates = WC_Tax::get_rates( $_product->get_tax_class() );
 
-			if ( $tax_rates !== $base_tax_rates ) {
-				$base_taxes     = $this->tax->calc_tax( $row_base_price, $base_tax_rates, true, true );
-				$modded_taxes   = $this->tax->calc_tax( $row_base_price - array_sum( $base_taxes ), $tax_rates, false );
+			if ( $tax_rates !== $base_tax_rates && apply_filters( 'woocommerce_adjust_non_base_location_prices', true )) {
+				$base_taxes     = WC_Tax::calc_tax( $row_base_price, $base_tax_rates, true, true );
+				$modded_taxes   = WC_Tax::calc_tax( $row_base_price - array_sum( $base_taxes ), $tax_rates, false );
 				$row_base_price = ( $row_base_price - array_sum( $base_taxes ) ) + array_sum( $modded_taxes );
 			}
 		}

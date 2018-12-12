@@ -3,7 +3,7 @@
  * Plugin Name: WooCommerce Table Rate Shipping
  * Plugin URI: https://woocommerce.com/products/table-rate-shipping/
  * Description: Table rate shipping lets you define rates depending on location vs shipping class, price, weight, or item count.
- * Version: 3.0.10
+ * Version: 3.0.12
  * Author: WooCommerce
  * Author URI: https://woocommerce.com/
  * Requires at least: 4.0
@@ -46,7 +46,7 @@ if ( is_woocommerce_active() ) {
 		 * Constructor
 		 */
 		public function __construct() {
-			define( 'TABLE_RATE_SHIPPING_VERSION', '3.0.10' );
+			define( 'TABLE_RATE_SHIPPING_VERSION', '3.0.12' );
 			define( 'TABLE_RATE_SHIPPING_DEBUG', defined( 'WP_DEBUG' ) && 'true' == WP_DEBUG && ( ! defined( 'WP_DEBUG_DISPLAY' ) || 'true' == WP_DEBUG_DISPLAY ) );
 			define( 'WC_TABLE_RATE_SHIPPING_MAIN_FILE', __FILE__ );
 
@@ -121,6 +121,7 @@ if ( is_woocommerce_active() ) {
 			add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 			add_filter( 'plugin_row_meta', array( $this, 'plugin_row_meta' ), 10, 2 );
 			add_action( 'woocommerce_shipping_init', array( $this, 'shipping_init' ) );
+			add_action( 'delete_product_shipping_class', array( $this, 'update_deleted_shipping_class' ) );
 		}
 
 		/**
@@ -227,6 +228,15 @@ if ( is_woocommerce_active() ) {
 		public function install() {
 			include_once( 'installer.php' );
 			update_option( 'table_rate_shipping_version', TABLE_RATE_SHIPPING_VERSION );
+		}
+
+		/**
+		 * @param int $term_id
+		 */
+		public function update_deleted_shipping_class( $term_id ) {
+			global $wpdb;
+
+			$wpdb->delete( $wpdb->prefix . 'woocommerce_shipping_table_rates', array( 'rate_class' => $term_id ) );
 		}
 
 	}
