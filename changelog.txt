@@ -1,5 +1,17 @@
 *** Table Rate Shipping Changelog ***
 
+2018-10-31 - version 3.0.12
+* Fix - Default to shipping costs exclusive of taxes for existing methods.
+
+2018-10-29 - version 3.0.11
+* Fix    - Duplicate row would not save changes.
+* Update - Allow more than 2 decimals of precision for rule constraints.
+* Update - Deleting shipping class deletes related table rate shipping rules.
+* Update - Allow table rate prices to be entered inclusive of taxes.
+* Fix    - Properly determine product's price when inclusive taxes are used and respect the 'woocommerce_adjust_non_base_location_prices' filter.
+* Fix    - Rounding errors of shipping prices before taxes are added.
+* Fix    - Multiple abort notices appearing.
+
 2018-09-25 - version 3.0.10
 * Update - WC 3.5 compatibility.
 

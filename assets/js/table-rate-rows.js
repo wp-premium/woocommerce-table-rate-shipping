@@ -193,7 +193,7 @@
 		reindexRows: function() {
 			var loop = 0;
 			$rates.find( 'tr' ).each( function( index, row ) {
-				$('input.text, input.checkbox, select.select', row ).each( function( i, el ) {
+				$('input.text, input.checkbox, select.select, input[type=hidden]', row ).each( function( i, el ) {
 					var t = $(el);
 					t.attr( 'name', t.attr('name').replace(/\[([^[]*)\]/, "[" + loop + "]" ) );
 				});
