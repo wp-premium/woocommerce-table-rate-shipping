@@ -884,14 +884,15 @@ class WC_Shipping_Table_Rate extends WC_Shipping_Method {
 
 				$tax_rates = WC_Tax::get_shipping_tax_rates();
 				$base_tax_rates = WC_Tax::get_shipping_tax_rates( '', false );
+				$total_cost = is_array( $rate['cost'] ) ? array_sum( $rate['cost'] ) : $rate['cost'];
 
 				if ( apply_filters( 'woocommerce_adjust_non_base_location_prices', true ) ) {
-					$taxes = WC_Tax::calc_tax( $rate['cost'], $base_tax_rates, true );
+					$taxes = WC_Tax::calc_tax( $total_cost, $base_tax_rates, true );
 				} else {
-					$taxes = WC_Tax::calc_tax( $rate['cost'], $tax_rates, true );
+					$taxes = WC_Tax::calc_tax( $total_cost, $tax_rates, true );
 				}
 
-				$rates[$key]['cost'] = $rate['cost'] - array_sum( $taxes );
+				$rates[$key]['cost'] = $total_cost - array_sum( $taxes );
 
 				$rates[$key]['taxes'] = WC_Tax::calc_shipping_tax( $rates[$key]['cost'], $tax_rates );
 
