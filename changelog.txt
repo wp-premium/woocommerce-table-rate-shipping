@@ -1,5 +1,8 @@
 *** Table Rate Shipping Changelog ***
 
+2018-11-28 - version 3.0.13
+* Fix - Fatal error with inclusive taxes and calculating rates per item.
+
 2018-10-31 - version 3.0.12
 * Fix - Default to shipping costs exclusive of taxes for existing methods.
 
