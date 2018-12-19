@@ -3,11 +3,11 @@
  * Plugin Name: WooCommerce Table Rate Shipping
  * Plugin URI: https://woocommerce.com/products/table-rate-shipping/
  * Description: Table rate shipping lets you define rates depending on location vs shipping class, price, weight, or item count.
- * Version: 3.0.12
+ * Version: 3.0.13
  * Author: WooCommerce
  * Author URI: https://woocommerce.com/
  * Requires at least: 4.0
- * Tested up to: 4.7
+ * Tested up to: 5.0
  * Copyright: 2017 WooCommerce.
  * License: GNU General Public License v3.0
  * License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -46,7 +46,7 @@ if ( is_woocommerce_active() ) {
 		 * Constructor
 		 */
 		public function __construct() {
-			define( 'TABLE_RATE_SHIPPING_VERSION', '3.0.12' );
+			define( 'TABLE_RATE_SHIPPING_VERSION', '3.0.13' );
 			define( 'TABLE_RATE_SHIPPING_DEBUG', defined( 'WP_DEBUG' ) && 'true' == WP_DEBUG && ( ! defined( 'WP_DEBUG_DISPLAY' ) || 'true' == WP_DEBUG_DISPLAY ) );
 			define( 'WC_TABLE_RATE_SHIPPING_MAIN_FILE', __FILE__ );
 
