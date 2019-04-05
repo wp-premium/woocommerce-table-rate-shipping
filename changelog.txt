@@ -1,5 +1,8 @@
 *** Table Rate Shipping Changelog ***
 
+2019-03-04 - version 3.0.14
+* Tweak - Order Handling Fee verbiage to not include percentages as not intended.
+
 2018-11-28 - version 3.0.13
 * Fix - Fatal error with inclusive taxes and calculating rates per item.
 
