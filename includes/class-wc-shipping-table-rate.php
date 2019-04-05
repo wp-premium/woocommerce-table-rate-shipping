@@ -137,6 +137,14 @@ class WC_Shipping_Table_Rate extends WC_Shipping_Method {
 		// 2nd option is for BW compat
 		$this->instance_settings = get_option( $this->get_instance_option_key(), get_option( $this->plugin_id . $this->id . '-' . $this->instance_id . '_settings', null ) );
 
+		/*
+		 * Order handling fee does not handle percentages. So
+		 * we need to remove previously saved % before initializing.
+		 *
+		 * @since 3.0.14 To fix https://github.com/woocommerce/woocommerce-table-rate-shipping/issues/91
+		 */
+		$this->instance_settings['order_handling_fee'] = str_replace( '%', '', $this->instance_settings['order_handling_fee'] );
+
 		// If there are no settings defined, use defaults.
 		if ( ! is_array( $this->instance_settings ) ) {
 			$form_fields             = $this->get_instance_form_fields();
@@ -182,10 +190,13 @@ class WC_Shipping_Table_Rate extends WC_Shipping_Method {
 			),
 			'order_handling_fee' => array(
 				'title'       => __( 'Handling Fee', 'woocommerce-table-rate-shipping' ),
-				'type'        => 'text',
-				'desc_tip'    => __( 'Enter an amount, e.g. 2.50, or a percentage, e.g. 5%. Leave blank to disable. This cost is applied once for the order as a whole.', 'woocommerce-table-rate-shipping' ),
+				'type'        => 'number',
+				'desc_tip'    => __( 'Enter an amount, e.g. 2.50. Leave blank to disable. This cost is applied once for the order as a whole.', 'woocommerce-table-rate-shipping' ),
 				'default'     => '',
-				'placeholder' => __( 'n/a', 'woocommerce-table-rate-shipping' )
+				'placeholder' => __( 'n/a', 'woocommerce-table-rate-shipping' ),
+				'custom_attributes' => array(
+					'step' => '0.01',
+				),
 			),
 			'max_shipping_cost' => array(
 				'title'       => __( 'Maximum Shipping Cost', 'woocommerce-table-rate-shipping' ),
@@ -218,7 +229,7 @@ class WC_Shipping_Table_Rate extends WC_Shipping_Method {
 				'type'        => 'text',
 				'desc_tip'    => __( 'Handling fee. Enter an amount, e.g. 2.50, or a percentage, e.g. 5%. Leave blank to disable. Applied based on the "Calculation Type" chosen below.', 'woocommerce-table-rate-shipping' ),
 				'default'     => '',
-				'placeholder' => __( 'n/a', 'woocommerce-table-rate-shipping' )
+				'placeholder' => __( 'n/a', 'woocommerce-table-rate-shipping' ),
 			),
 			'min_cost' => array(
 				'title'       => __( 'Minimum Cost Per [item]', 'woocommerce-table-rate-shipping' ),
