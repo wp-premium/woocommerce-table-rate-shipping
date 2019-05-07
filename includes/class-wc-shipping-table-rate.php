@@ -937,17 +937,21 @@ class WC_Shipping_Table_Rate extends WC_Shipping_Method {
 	/**
 	 * Get raw shipping rates from the DB.
 	 *
+	 * Optional filter helper for integration with other plugins.
+	 *
 	 * @param string $output Output format.
 	 * @return mixed
 	 */
 	public function get_shipping_rates( $output = OBJECT ) {
 		global $wpdb;
 
-		return $wpdb->get_results( "
+		$rates = $wpdb->get_results( "
 			SELECT * FROM {$this->rates_table}
 			WHERE shipping_method_id = {$this->instance_id}
 			ORDER BY rate_order ASC;
 		", $output );
+
+		return apply_filters( 'woocommerce_table_rate_get_shipping_rates', $rates );
 	}
 
 	/**
