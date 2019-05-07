@@ -1,5 +1,9 @@
 *** Table Rate Shipping Changelog ***
 
+2019-04-14 - version 3.0.15
+* Update - Add filter that allows per shipping class intergration with other plugins.
+* Tweak - WC 3.6 compatibility.
+
 2019-03-04 - version 3.0.14
 * Tweak - Order Handling Fee verbiage to not include percentages as not intended.
 
