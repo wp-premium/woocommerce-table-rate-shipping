@@ -67,7 +67,10 @@ function wc_table_rate_admin_shipping_rows( $instance ) {
 				<th colspan="9"><span class="description"><?php esc_html_e( 'Define your table rates here in order of priority.', 'woocommerce-table-rate-shipping' ); ?></span> <a href="#" class="dupe button"><?php esc_html_e( 'Duplicate selected rows', 'woocommerce-table-rate-shipping' ); ?></a> <a href="#" class="remove button"><?php esc_html_e( 'Delete selected rows', 'woocommerce-table-rate-shipping' ); ?></a></th>
 			</tr>
 		</tfoot>
-		<tbody class="table_rates" data-rates="<?php echo esc_attr( wp_json_encode( $instance->get_normalized_shipping_rates() ) ); ?>"></tbody>
+		<?php
+			$normalized_rates = function_exists( 'wc_esc_json' ) ? wc_esc_json( wp_json_encode( $instance->get_normalized_shipping_rates() ) ) : _wp_specialchars( wp_json_encode( $instance->get_normalized_shipping_rates() ), ENT_QUOTES, 'UTF-8', true );
+		?>
+		<tbody class="table_rates" data-rates="<?php echo $normalized_rates; ?>"></tbody>
 	</table>
 	<script type="text/template" id="tmpl-table-rate-shipping-row-template">
 		<tr class="table_rate">
