@@ -143,7 +143,11 @@ class WC_Shipping_Table_Rate extends WC_Shipping_Method {
 		 *
 		 * @since 3.0.14 To fix https://github.com/woocommerce/woocommerce-table-rate-shipping/issues/91
 		 */
-		$this->instance_settings['order_handling_fee'] = str_replace( '%', '', $this->instance_settings['order_handling_fee'] );
+		$this->instance_settings['order_handling_fee'] = str_replace(
+			'%',
+			'',
+			empty( $this->instance_settings['order_handling_fee'] ) ? '' : $this->instance_settings['order_handling_fee']
+		);
 
 		// If there are no settings defined, use defaults.
 		if ( ! is_array( $this->instance_settings ) ) {
