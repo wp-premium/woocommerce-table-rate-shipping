@@ -1,5 +1,14 @@
 *** Table Rate Shipping Changelog ***
 
+2019-11-05 - version 3.0.18
+* Tweak - WC 3.8 compatibility.
+
+2019-08-08 - version 3.0.17
+* Tweak - WC 3.7 compatibility.
+
+2019-07-02 - version 3.0.16
+* Fix   - PHP notices.
+
 2019-04-14 - version 3.0.15
 * Update - Add filter that allows per shipping class intergration with other plugins.
 * Tweak - WC 3.6 compatibility.
