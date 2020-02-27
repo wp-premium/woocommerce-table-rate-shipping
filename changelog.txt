@@ -1,5 +1,15 @@
 *** Table Rate Shipping Changelog ***
 
+2020-02-26 - version 3.0.21
+* Tweak - WC 4.0 compatibility.
+* Tweak - Improve layout for min max fields.
+
+2020-02-05 - version 3.0.20
+* Fix - Use proper escape for attributes.
+
+2020-01-15 - version 3.0.19
+* Tweak - Only show abort notices in the cart/checkout page.
+
 2019-11-05 - version 3.0.18
 * Tweak - WC 3.8 compatibility.
 

@@ -543,7 +543,7 @@ class WC_Shipping_Table_Rate extends WC_Shipping_Method {
 						$matched = true;
 						if ( $rate->rate_abort ) {
 							if ( ! empty( $rate->rate_abort_reason ) && ! wc_has_notice( $rate->rate_abort_reason, 'notice' ) ) {
-								wc_add_notice( $rate->rate_abort_reason, 'notice' );
+								$this->add_notice( $rate->rate_abort_reason, 'notice' );
 							}
 							return;
 						}
@@ -623,7 +623,7 @@ class WC_Shipping_Table_Rate extends WC_Shipping_Method {
 
 						if ( $rate->rate_abort ) {
 							if ( ! empty( $rate->rate_abort_reason ) ) {
-								wc_add_notice( $rate->rate_abort_reason, 'notice' );
+								$this->add_notice( $rate->rate_abort_reason, 'notice' );
 							}
 							return;
 						}
@@ -761,7 +761,7 @@ class WC_Shipping_Table_Rate extends WC_Shipping_Method {
 
 						if ( $rate->rate_abort ) {
 							if ( ! empty( $rate->rate_abort_reason ) ) {
-								wc_add_notice( $rate->rate_abort_reason, 'notice' );
+								$this->add_notice( $rate->rate_abort_reason, 'notice' );
 							}
 							return;
 						}
@@ -848,7 +848,7 @@ class WC_Shipping_Table_Rate extends WC_Shipping_Method {
 
 				if ( $rate->rate_abort ) {
 					if ( ! empty( $rate->rate_abort_reason ) ) {
-						wc_add_notice( $rate->rate_abort_reason, 'notice' );
+						$this->add_notice( $rate->rate_abort_reason, 'notice' );
 					}
 					$rates = array(); // Clear rates
 					break;
@@ -1033,5 +1033,21 @@ class WC_Shipping_Table_Rate extends WC_Shipping_Method {
 			update_option( $this->get_instance_option_key(), $this->sanitized_fields );
 			return true;
 		}
+	}
+
+	/**
+	 * Adds a notice to the cart/checkout header.
+	 *
+	 * @since 3.0.19
+	 * @param string $message Message to show
+	 * @return void
+	 */
+	private function add_notice( $message ) {
+		// Only display shipping notices in cart/checkout.
+		if ( ! is_cart() || ! is_checkout() ) {
+			return;
+		}
+
+		wc_add_notice( $message );
 	}
 }

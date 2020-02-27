@@ -21,15 +21,6 @@ table#shipping_rates, #shipping_class_priorities table {
 			background: #fafafa;
 		}
 	}
-	td.minmax {
-		input {
-			width: 50%;
-			margin: 0;
-		}
-		input:first-child {
-			border-right: 0;
-		}
-	}
 	th.checkbox, td.checkbox {
 		text-align: center;
 	}
