@@ -21,43 +21,43 @@ function wc_table_rate_admin_shipping_rows( $instance ) {
 				<?php if ( is_array( $shipping_classes ) && count( $shipping_classes ) ) : ?>
 					<th>
 						<?php esc_html_e( 'Shipping Class', 'woocommerce-table-rate-shipping' ); ?>
-						<a class="tips" data-tip="<?php esc_attr_e( 'Shipping class this rate applies to.', 'woocommerce-table-rate-shipping' ); ?>">[?]</a>
+						<a class="tips" data-tip="<?php echo wc_sanitize_tooltip( __( 'Shipping class this rate applies to.', 'woocommerce-table-rate-shipping' ) ); ?>">[?]</a>
 					</th>
 				<?php endif; ?>
 				<th>
 					<?php esc_html_e( 'Condition', 'woocommerce-table-rate-shipping' ); ?>
-					<a class="tips" data-tip="<?php esc_html_e( 'Condition vs. destination', 'woocommerce-table-rate-shipping' ); ?>">[?]</a>
+					<a class="tips" data-tip="<?php echo wc_sanitize_tooltip( __( 'Condition vs. destination', 'woocommerce-table-rate-shipping' ) ); ?>">[?]</a>
 				</th>
 				<th>
 					<?php esc_html_e( 'Min&ndash;Max', 'woocommerce-table-rate-shipping' ); ?>
-					<a class="tips" data-tip="<?php esc_attr_e( 'Bottom and top range for the selected condition. ', 'woocommerce-table-rate-shipping' ); ?>">[?]</a>
+					<a class="tips" data-tip="<?php echo wc_sanitize_tooltip( __( 'Bottom and top range for the selected condition. ', 'woocommerce-table-rate-shipping' ) ); ?>">[?]</a>
 				</th>
 				<th width="1%" class="checkbox">
 					<?php esc_html_e( 'Break', 'woocommerce-table-rate-shipping' ); ?>
-					<a class="tips" data-tip="<?php esc_attr_e( 'Break at this point. For per-order rates, no rates other than this will be offered. For calculated rates, this will stop any further rates being matched.', 'woocommerce-table-rate-shipping' ); ?>">[?]</a>
+					<a class="tips" data-tip="<?php echo wc_sanitize_tooltip( __( 'Break at this point. For per-order rates, no rates other than this will be offered. For calculated rates, this will stop any further rates being matched.', 'woocommerce-table-rate-shipping' ) ); ?>">[?]</a>
 				</th>
 				<th width="1%" class="checkbox">
 					<?php esc_html_e( 'Abort', 'woocommerce-table-rate-shipping' ); ?>
-					<a class="tips" data-tip="<?php esc_attr_e( 'Enable this option to disable all rates/this shipping method if this row matches any item/line/class being quoted.', 'woocommerce-table-rate-shipping' ); ?>">[?]</a>
+					<a class="tips" data-tip="<?php echo wc_sanitize_tooltip( __( 'Enable this option to disable all rates/this shipping method if this row matches any item/line/class being quoted.', 'woocommerce-table-rate-shipping' ) ); ?>">[?]</a>
 				</th>
 				<th class="cost">
 					<?php esc_html_e( 'Row cost', 'woocommerce-table-rate-shipping' ); ?>
-					<a class="tips" data-tip="<?php esc_attr_e( 'Cost for shipping the order, including tax.', 'woocommerce-table-rate-shipping' ); ?>">[?]</a>
+					<a class="tips" data-tip="<?php echo wc_sanitize_tooltip( __( 'Cost for shipping the order, including tax.', 'woocommerce-table-rate-shipping' ) ); ?>">[?]</a>
 				</th>
 				<th class="cost cost_per_item">
 					<?php esc_html_e( 'Item cost', 'woocommerce-table-rate-shipping' ); ?>
-					<a class="tips" data-tip="<?php esc_attr_e( 'Cost per item, including tax.', 'woocommerce-table-rate-shipping' ); ?>">[?]</a>
+					<a class="tips" data-tip="<?php echo wc_sanitize_tooltip( __( 'Cost per item, including tax.', 'woocommerce-table-rate-shipping' ) ); ?>">[?]</a>
 				</th>
 				<th class="cost cost_per_weight">
 					<?php echo esc_html( get_option( 'woocommerce_weight_unit' ) . ' ' . __( 'cost', 'woocommerce-table-rate-shipping' ) ); ?>
-					<a class="tips" data-tip="<?php esc_attr_e( 'Cost per weight unit.', 'woocommerce-table-rate-shipping' ); ?>">[?]</a>
+					<a class="tips" data-tip="<?php echo wc_sanitize_tooltip( __( 'Cost per weight unit.', 'woocommerce-table-rate-shipping' ) ); ?>">[?]</a>
 				</th>
 				<th class="cost cost_percent">
 					<?php esc_html_e( '% cost', 'woocommerce-table-rate-shipping' ); ?>
-					<a class="tips" data-tip="<?php esc_attr_e( 'Percentage of total to charge.', 'woocommerce-table-rate-shipping' ); ?>">[?]</a></th>
+					<a class="tips" data-tip="<?php echo wc_sanitize_tooltip( __( 'Percentage of total to charge.', 'woocommerce-table-rate-shipping' ) ); ?>">[?]</a></th>
 				<th class="shipping_label">
 					<?php esc_html_e( 'Label', 'woocommerce-table-rate-shipping' ); ?>
-					<a class="tips" data-tip="<?php esc_attr_e( 'Label for the shipping method which the user will be presented. ', 'woocommerce-table-rate-shipping' ); ?>">[?]</a>
+					<a class="tips" data-tip="<?php echo wc_sanitize_tooltip( __( 'Label for the shipping method which the user will be presented. ', 'woocommerce-table-rate-shipping' ) ); ?>">[?]</a>
 				</th>
 			</tr>
 		</thead>

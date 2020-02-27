@@ -64,7 +64,7 @@
                     	?>
 			        </select>
 
-			        <label for="postcodes"><?php _e( 'Postcodes', SHIPPING_ZONES_TEXTDOMAIN ); ?> <img class="help_tip" width="16" data-tip='<?php _e('List 1 postcode per line. Wildcards (*) and ranges (for numeric postcodes) are supported.', SHIPPING_ZONES_TEXTDOMAIN) ?>' src="<?php echo WC()->plugin_url(); ?>/assets/images/help.png" /></label>
+			        <label for="postcodes"><?php _e( 'Postcodes', SHIPPING_ZONES_TEXTDOMAIN ); ?> <img class="help_tip" width="16" data-tip='<?php echo wc_sanitize_tooltip( __('List 1 postcode per line. Wildcards (*) and ranges (for numeric postcodes) are supported.', SHIPPING_ZONES_TEXTDOMAIN ) ); ?>' src="<?php echo WC()->plugin_url(); ?>/assets/images/help.png" /></label>
 			        <textarea name="postcodes" id="postcodes" class="input-text large-text" cols="25" rows="5"></textarea>
 
 		        </div>
