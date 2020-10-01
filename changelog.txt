@@ -1,5 +1,32 @@
 *** Table Rate Shipping Changelog ***
 
+2020-08-19 - version 3.0.29
+* Tweak - WordPress 5.5 compatibility.
+
+2020-06-05 - version 3.0.28
+* Tweak - WC 4.2 compatibility.
+
+2020-05-12 - version 3.0.27
+* Fix - Use tax rate based on cart items when table rate is set to including taxes.
+* Fix - Deduct taxes when user is VAT exempt and table rate is set to including taxes.
+
+2020-04-30 - version 3.0.26
+* Tweak - WC 4.1 compatibility.
+
+2020-04-14 - version 3.0.25
+* Fix - Save the abort notice in the session (to display when shipping methods are loaded from cache).
+
+2020-04-08 - version 3.0.24
+* Fix - Adjust conditions for abort notices to show in cart/checkout pages.
+* Tweak - WP 5.4 compatibility.
+
+2020-04-01 - version 3.0.23
+* Tweak - Add filter to compare price restrictions after discounts and coupons have been applied.
+* Tweak - Remove legacy code.
+
+2020-03-11 - version 3.0.22
+* Fix - Change columns in table based on the chosen calculation type.
+
 2020-02-26 - version 3.0.21
 * Tweak - WC 4.0 compatibility.
 * Tweak - Improve layout for min max fields.

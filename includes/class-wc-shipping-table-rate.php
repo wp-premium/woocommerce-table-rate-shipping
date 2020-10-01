@@ -509,6 +509,7 @@ class WC_Shipping_Table_Rate extends WC_Shipping_Method {
 			return false;
 
 		$rates = array();
+		$this->unset_abort_message();
 
 		// Get rates, depending on type
 		if ( $this->calculation_type == 'item' ) {
@@ -524,8 +525,10 @@ class WC_Shipping_Table_Rate extends WC_Shipping_Method {
 
 				if ( $values['quantity'] > 0 && $_product->needs_shipping() ) {
 
+					$product_price = $this->get_product_price( $_product, 1, $values );
+
 					$matching_rates = $this->query_rates( array(
-						'price'             => $this->get_product_price( $_product ),
+						'price'             => $product_price,
 						'weight'            => (float) $_product->get_weight(),
 						'count'             => 1,
 						'count_in_class'    => $this->count_items_in_class( $package, $_product->get_shipping_class_id() ),
@@ -533,13 +536,13 @@ class WC_Shipping_Table_Rate extends WC_Shipping_Method {
 					) );
 
 					$item_weight = round( (float) $_product->get_weight(), 2 );
-					$item_fee    = (float) $this->get_fee( $this->fee, $this->get_product_price( $_product ) );
+					$item_fee    = (float) $this->get_fee( $this->fee, $product_price );
 					$item_cost   = 0;
 
 					foreach ( $matching_rates as $rate ) {
 						$item_cost += (float) $rate->rate_cost;
 						$item_cost += (float) $rate->rate_cost_per_weight_unit * $item_weight;
-						$item_cost += ( (float) $rate->rate_cost_percent / 100 ) * $this->get_product_price( $_product );
+						$item_cost += ( (float) $rate->rate_cost_percent / 100 ) * $product_price;
 						$matched = true;
 						if ( $rate->rate_abort ) {
 							if ( ! empty( $rate->rate_abort_reason ) && ! wc_has_notice( $rate->rate_abort_reason, 'notice' ) ) {
@@ -602,8 +605,10 @@ class WC_Shipping_Table_Rate extends WC_Shipping_Method {
 
 				if ( $values['quantity'] > 0 && $_product->needs_shipping() ) {
 
+					$product_price = $this->get_product_price( $_product, $values['quantity'], $values );
+
 					$matching_rates = $this->query_rates( array(
-						'price'             => $this->get_product_price( $_product, $values['quantity'] ),
+						'price'             => $product_price,
 						'weight'            => (float) $_product->get_weight() * $values['quantity'],
 						'count'             => $values['quantity'],
 						'count_in_class'    => $this->count_items_in_class( $package, $_product->get_shipping_class_id() ),
@@ -611,14 +616,14 @@ class WC_Shipping_Table_Rate extends WC_Shipping_Method {
 					) );
 
 					$item_weight = round( (float) $_product->get_weight() * $values['quantity'], 2 );
-					$item_fee    = (float) $this->get_fee( $this->fee, $this->get_product_price( $_product, $values['quantity'] ) );
+					$item_fee    = (float) $this->get_fee( $this->fee, $product_price );
 					$item_cost   = 0;
 
 					foreach ( $matching_rates as $rate ) {
 						$item_cost += (float) $rate->rate_cost;
 						$item_cost += (float) $rate->rate_cost_per_item * $values['quantity'];
 						$item_cost += (float) $rate->rate_cost_per_weight_unit * $item_weight;
-						$item_cost += ( (float) $rate->rate_cost_percent / 100 ) * ( $this->get_product_price( $_product, $values['quantity'] ) );
+						$item_cost += ( (float) $rate->rate_cost_percent / 100 ) * $product_price;
 						$matched = true;
 
 						if ( $rate->rate_abort ) {
@@ -697,7 +702,7 @@ class WC_Shipping_Table_Rate extends WC_Shipping_Method {
 						$classes[ $shipping_class ]->items_in_class = 0;
 					}
 
-					$classes[ $shipping_class ]->price          += $this->get_product_price( $_product, $values['quantity'] );
+					$classes[ $shipping_class ]->price          += $this->get_product_price( $_product, $values['quantity'], $values );
 					$classes[ $shipping_class ]->weight         += (float) $_product->get_weight() * $values['quantity'];
 					$classes[ $shipping_class ]->items          += $values['quantity'];
 					$classes[ $shipping_class ]->items_in_class += $values['quantity'];
@@ -823,7 +828,7 @@ class WC_Shipping_Table_Rate extends WC_Shipping_Method {
 				$_product = $values['data'];
 
 				if ( $values['quantity'] > 0 && $_product->needs_shipping() ) {
-					$price  += $this->get_product_price( $_product, $values['quantity'] );
+					$price  += $this->get_product_price( $_product, $values['quantity'], $values );
 					$weight += (float) $_product->get_weight() * (float) $values['quantity'];
 					$count  += $values['quantity'];
 
@@ -893,12 +898,19 @@ class WC_Shipping_Table_Rate extends WC_Shipping_Method {
 
 		}
 
-		if ( 'yes' === $this->get_instance_option( 'prices_include_tax' ) && $this->is_taxable() ) {
+		$is_customer_vat_exempt = WC()->cart->get_customer()->get_is_vat_exempt();
+
+		if ( 'yes' === $this->get_instance_option( 'prices_include_tax' ) && ( $this->is_taxable() || $is_customer_vat_exempt ) ) {
 			// We allow the table rate to be entered inclusive of taxes just like product prices.
 			foreach ( $rates as $key => $rate ) {
 
 				$tax_rates = WC_Tax::get_shipping_tax_rates();
-				$base_tax_rates = WC_Tax::get_shipping_tax_rates( '', false );
+
+				// Temporarily override setting since our shipping rate will always include taxes here.
+				add_filter( 'woocommerce_prices_include_tax', array( $this, 'override_prices_include_tax_setting' ) );
+				$base_tax_rates = WC_Tax::get_shipping_tax_rates( null, false );
+				remove_filter( 'woocommerce_prices_include_tax', array( $this, 'override_prices_include_tax_setting' ) );
+
 				$total_cost = is_array( $rate['cost'] ) ? array_sum( $rate['cost'] ) : $rate['cost'];
 
 				if ( apply_filters( 'woocommerce_adjust_non_base_location_prices', true ) ) {
@@ -907,11 +919,11 @@ class WC_Shipping_Table_Rate extends WC_Shipping_Method {
 					$taxes = WC_Tax::calc_tax( $total_cost, $tax_rates, true );
 				}
 
-				$rates[$key]['cost'] = $total_cost - array_sum( $taxes );
+				$rates[ $key ]['cost'] = $total_cost - array_sum( $taxes );
 
-				$rates[$key]['taxes'] = WC_Tax::calc_shipping_tax( $rates[$key]['cost'], $tax_rates );
+				$rates[ $key ]['taxes'] = $is_customer_vat_exempt ? array() : WC_Tax::calc_shipping_tax( $rates[ $key ]['cost'], $tax_rates );
 
-				$rates[$key]['price_decimals'] = '4'; // Prevent the cost from being rounded before the tax is added.
+				$rates[ $key ]['price_decimals'] = '4'; // Prevent the cost from being rounded before the tax is added.
 			}
 		}
 
@@ -923,6 +935,17 @@ class WC_Shipping_Table_Rate extends WC_Shipping_Method {
 		// Set available
 		$this->available_rates = $rates;
 
+		return true;
+	}
+
+	/**
+	 * Unique function for overriding the prices including tax setting in WooCommerce.
+	 *
+	 * @since 3.0.27
+	 *
+	 * @return bool
+	 */
+	public function override_prices_include_tax_setting() {
 		return true;
 	}
 
@@ -990,12 +1013,21 @@ class WC_Shipping_Table_Rate extends WC_Shipping_Method {
 	}
 
 	/**
-	 * get_product_price function.
+	 * Retrieve the product price from a line item.
 	 *
-	 * @param object $_product
-	 * @return array
+	 * @param object $_product Product object.
+	 * @param int    $qty      Line item quantity.
+	 * @param array  $item     Array of line item data.
+	 * @return float
 	 */
-	public function get_product_price( $_product, $qty = 1 ) {
+	public function get_product_price( $_product, $qty = 1, $item = array() ) {
+
+		// Use the product price based on the line item totals (including coupons and discounts).
+		// This is not enabled by default (since it can be interpreted differently).
+		if ( apply_filters( 'woocommerce_table_rate_compare_price_limits_after_discounts', false, $item ) && isset( $item['line_total'] ) ) {
+			return $item['line_total'] + ( ! empty( $item['line_tax'] ) ? $item['line_tax'] : 0 );
+		}
+
 		$row_base_price = $_product->get_price() * $qty;
 		$row_base_price = apply_filters( 'woocommerce_table_rate_package_row_base_price', $row_base_price, $_product, $qty );
 
@@ -1043,11 +1075,43 @@ class WC_Shipping_Table_Rate extends WC_Shipping_Method {
 	 * @return void
 	 */
 	private function add_notice( $message ) {
+		$this->save_abort_message( $message );
+
 		// Only display shipping notices in cart/checkout.
-		if ( ! is_cart() || ! is_checkout() ) {
+		if ( ! is_cart() && ! is_checkout() ) {
 			return;
 		}
 
-		wc_add_notice( $message );
+		if ( ! wc_has_notice( $message ) ) {
+			wc_add_notice( $message );
+		}
 	}
+
+	/**
+	 * Save the abort notice in the session (to display when shipping methods are loaded from cache).
+	 *
+	 * @since 3.0.25
+	 * @param string $message Abort message.
+	 */
+	private function save_abort_message( $message ) {
+		$abort = WC()->session->get( WC_Table_Rate_Shipping::$abort_key );
+		if ( empty( $abort ) ) {
+			$abort = array();
+		}
+
+		$abort[ $this->instance_id ] = $message;
+		WC()->session->set( WC_Table_Rate_Shipping::$abort_key, $abort );
+	}
+
+	/**
+	 * Unset the abort notice in the session.
+	 *
+	 * @since 3.0.25
+	 */
+	private function unset_abort_message() {
+		$abort = WC()->session->get( WC_Table_Rate_Shipping::$abort_key );
+		unset( $abort[ $this->instance_id ] );
+		WC()->session->set( WC_Table_Rate_Shipping::$abort_key, $abort );
+	}
+
 }

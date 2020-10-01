@@ -2,13 +2,15 @@
 ( function( $, data, wp, ajaxurl ) {
 
 	var wc_table_rate_rows_row_template = wp.template( 'table-rate-shipping-row-template' ),
+		$settings_form                  = $( '#mainform' ),
 		$rates_table                    = $( '#shipping_rates' ),
 		$rates                          = $rates_table.find( 'tbody.table_rates' );
 
 	var wc_table_rate_rows = {
 		init: function() {
+			$settings_form
+				.on( 'change', '#woocommerce_table_rate_calculation_type', this.onCalculationTypeChange );
 			$rates_table
-				.on( 'change', '#woocommerce_table_rate_calculation_type', this.onCalculationTypeChange )
 				.on( 'change', 'select[name^="shipping_condition"]', this.onShippingConditionChange )
 				.on( 'change', 'input[name^="shipping_abort["]', this.onShippingAbortChange )
 				.on( 'click', 'a.add-rate', this.onAddRate )
@@ -25,11 +27,11 @@
 				} ) );
 			} );
 
-			$( 'label[for="woocommerce_table_rate_handling_fee"], label[for="woocommerce_table_rate_max_cost"], label[for="woocommerce_table_rate_min_cost"]', $rates_table ).each( function( i, el ) {
+			$( 'label[for="woocommerce_table_rate_handling_fee"], label[for="woocommerce_table_rate_max_cost"], label[for="woocommerce_table_rate_min_cost"]', $settings_form ).each( function( i, el ) {
 				$(el).data( 'o_label', $(el).text() );
 			});
 
-			$( '#woocommerce_table_rate_calculation_type, select[name^="shipping_condition"], input[name^="shipping_abort["]', $rates_table ).change();
+			$( '#woocommerce_table_rate_calculation_type, select[name^="shipping_condition"], input[name^="shipping_abort["]', $settings_form ).change();
 
 			$rates.sortable( {
 				items: 'tr',
@@ -52,16 +54,6 @@
 					wc_table_rate_rows.reindexRows();
 				}
 			} );
-
-			$( document.body ).on( 'change', '#woocommerce_table_rate_calculation_type', function() {
-				if ( '' === $( this ).val() ) {
-					$( '#shipping_class_priorities' ).show();
-				} else {
-					$( '#shipping_class_priorities' ).hide();
-				}
-			});
-
-			$( '#woocommerce_table_rate_calculation_type' ).change();
 		},
 		onCalculationTypeChange: function() {
 			var selected = $( this ).val();
